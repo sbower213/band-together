@@ -12,11 +12,16 @@ body{
     overflow-y: scroll;
 }
 
+#instrumentContainer{
+    height: 35%;
+}
+
 .track{
     background-color: #777777;
     margin-bottom: 5px;
     height: 125px;
     position: relative;
+    cursor: pointer;
 }
 
 .instrumentInfo{
@@ -25,4 +30,41 @@ body{
     position: absolute;
     height: 100%;
     z-index: 2;
+}
+
+.keyboard{
+    overflow-x: scroll;
+    width: 100%;
+    background-color: black;
+}
+
+.keyContainer{
+    width: 2182px;
+}
+
+.white, .black-spacer{
+    display: inline-block;
+    cursor: pointer;
+    vertical-align: top;
+}
+
+.white{
+    height: 100%;
+    width: 50px;
+    background-color: white;
+    margin-left: -1px;
+    margin-right: -1px;
+}
+
+.black-spacer{
+    width: 0px;
+    margin-left: -4px;
+}
+
+.black{
+    width: 30px;
+    height: 60%;
+    background-color: black;
+    position: relative;
+    margin-left: -15px;
 }

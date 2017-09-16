@@ -5,6 +5,14 @@ function executeAddTrackCommand(){
 function addTrack(){
     $.get('./components/track.html', function(data){
         $('#trackContainer').append(data);
+        $('.track').on('click', function(){
+            //open instrument container if one doesn't exist
+            if($('#keyboard').length == 0) {
+                $.get('./components/keyboard.html', function(data){
+                    $('#instrumentContainer').html(data);
+                });
+            }
+        });
     });
 }
 
