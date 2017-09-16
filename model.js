@@ -86,9 +86,6 @@ Track.prototype.play = function(beat) {
     return;
   }
   for (let i = 0; i < this.notes[beat].length; i++) {
-    console.log(this.notes[beat][i]);
-    console.log(this.notes[beat][i].noteData.pitch);
-    console.log(this.notes[beat][i].noteData.duration / 4.0 / this.trackData.tempo * 60.0);
     this.trackData.instrument.play(
       this.notes[beat][i].noteData.pitch,
       this.notes[beat][i].noteData.duration / 4.0 / this.trackData.tempo * 60.0, // convert to secs
