@@ -4,7 +4,6 @@ var commandTypes = {
     DELETE_TRACK:2,
     NOP:3,
     INSERT_NOTE:4,
-    MODIFY_NOTE:8,
     DELETE_NOTE:5,
     PROJECT_SETTINGS:6
 };
