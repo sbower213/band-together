@@ -1,43 +1,23 @@
-var commandProcessor;
-var model;
-var globalSessionId;
+//not working? make sure you ran npm install
+var express = require('express');
+var app = express();
+var exphbs = require('express-handlebars'); //maybe use this to load existing tracks instead of jquery?
+app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
 
-$(document).ready(function() {
-    model = new Model();
-    commandProcessor = new CommandProcessor(model);
-    globalSessionId = Math.floor(Math.random() * 10000000);
-});
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
 
-function executeAddTrackCommand(){
-    commandProcessor.fire(new AddTrack(model.tracks.length));
-}
+var firebase = require('firebase');
 
-function addTrack(){
-    $.get('./components/track.html', function(data){
-        $('#trackContainer').append(data);
-        $('.track').on('click', function(){
-            //open instrument container if one doesn't exist
-            if($('#keyboard').length == 0) {
-                $.get('./components/keyboard.html', function(data){
-                    $('#instrumentContainer').html(data);
-                });
-            }
-        });
-    });
-}
+//TODO: read from file;
+var config = {
+  apiKey: "apiKey",
+  authDomain: "projectId.firebaseapp.com",
+  databaseURL: "https://databaseName.firebaseio.com"
+};
 
-function executeDeleteTrackCommand(trackId){
-    commandProcessor.fire(new DeleteTrack(trackId));
-}
+firebase.initializeApp(config);
 
-function deleteTrack(trackId){
-    $('#'+trackId).remove();
-}
+var rootRef = firebase.database().ref();
 
-function executeModifyTrackCommand(trackId, modification){
-    commandProcessor.fire(new ModifyTrack(trackId, modification));
-}
-
-function modifyTrack(trackId, modification){
-
-}
+var otServer = require('./otServer.js');
