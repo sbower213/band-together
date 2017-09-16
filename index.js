@@ -1,5 +1,15 @@
+var commandProcessor;
+var model;
+var globalSessionId;
+
+$(document).ready(function() {
+    model = new Model();
+    commandProcessor = new CommandProcessor(model);
+    globalSessionId = Math.floor(Math.random() * 10000000);
+});
+
 function executeAddTrackCommand(){
-    addTrack(); //need params for initial instrument type?
+    commandProcessor.fire(new AddTrack(model.tracks.length));
 }
 
 function addTrack(){
@@ -17,7 +27,7 @@ function addTrack(){
 }
 
 function executeDeleteTrackCommand(trackId){
-    deleteTrack(trackId);
+    commandProcessor.fire(new DeleteTrack(trackId));
 }
 
 function deleteTrack(trackId){
@@ -25,7 +35,7 @@ function deleteTrack(trackId){
 }
 
 function executeModifyTrackCommand(trackId, modification){
-    modifyTrack(trackId, modification);
+    commandProcessor.fire(new ModifyTrack(trackId, modification));
 }
 
 function modifyTrack(trackId, modification){
