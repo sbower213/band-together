@@ -6,7 +6,8 @@ function CommandProcessor(model) {
     this.buffer = [];
     this.model = model;
     this.inFlight = undefined;
-
+    this.serverCommandCount = 0;
+    
     this.inverses = [];   // For undo. TODO
 }
 
@@ -57,7 +58,7 @@ CommandProcessor.sendCommand() {
         this.buffer = this.buffer.slice(1);
         this.unsyncedCommands = this.buffer.slice(1);
     
-        // Firebase shit to send command over
+        // Firebase shit to send command over, with serverCommandCount
 
         this.inFlight = command;
     }
@@ -66,6 +67,7 @@ CommandProcessor.sendCommand() {
 // Trigger this from Firebase
 CommandProcessor.receiveCommands = function(data) {
     handleCommandList(data.commands);
+    this.serverCommandCount = data.commandCount;
     
     if (!this.inFlight) {
         this.sendCommand();
