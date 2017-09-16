@@ -1,0 +1,12 @@
+
+
+
+
+var commands = {
+    ADD_TRACK,
+    MODIFY_TRACK,
+    DELETE_TRACK,
+    NOP,
+    INSERT_NOTE,
+    DELETE_NOTE
+}
