@@ -1,5 +1,3 @@
-
-
 function CommandProcessor(model) {
     this.commandList = [];
     this.unsyncedCommands = [];
@@ -59,6 +57,9 @@ CommandProcessor.prototype.sendCommand = function() {
         this.unsyncedCommands = this.buffer.slice(1);
 
         // Firebase shit to send command over, with serverCommandCount
+        FireBaseHandler.updateHistory(this.serverCommandCount, command);
+        
+        this.serverCommandCount += 1;
 
         this.inFlight = command;
     }
