@@ -27,11 +27,9 @@ var model;
 var pressedKeys;
 var globalSessionId;
 var expandedTrack;
-<<<<<<< HEAD
 var deletedTracks = [];
-=======
 var oldColors;
->>>>>>> ae527af5566b68c3dca01236fdd5e4b5af649a60
+
 
 $(document).ready(function() {
     model = new Model();
@@ -89,7 +87,7 @@ function executeAddTrackCommand(){
 
 var trackId = 0;
 function addTrack(index, trackData){
-<<<<<<< HEAD
+
     
         console.log(index)
         $.get('./components/track.html', function(data){
@@ -105,7 +103,6 @@ function addTrack(index, trackData){
                         delete queuedNotes[i];
                     }
                 }
-=======
     $.get('./components/track.html', function(data){
         $('#trackContainer').append(data);
         $(".track").last().attr("id","" + index);
@@ -115,8 +112,7 @@ function addTrack(index, trackData){
         for (var i in queuedNotes) {
             if (queuedNotes[i].track == index) {
                 addNote(queuedNotes[i].track, queuedNotes[i].beat, queuedNotes[i].noteData);
-                delete queuedNotes[i]; //have i mentioned that i hate the fact that this is real syntax? because i do.
->>>>>>> ae527af5566b68c3dca01236fdd5e4b5af649a60
+                delete queuedNotes[i];
             }
         });
      
