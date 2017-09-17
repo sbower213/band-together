@@ -68,3 +68,7 @@ body{
     position: relative;
     margin-left: -15px;
 }
+
+.key:active {
+    background-color: #999999;
+}
