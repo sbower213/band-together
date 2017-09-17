@@ -6,6 +6,37 @@
         </div>
     </div>
     <div class="trackData">
-      
+      <table class="trackGrid">
+
+      </table>
+      <script>
+        $(document).ready(function(){
+
+            $('.trackGrid').each(function(index){
+                $(this).css('width', '100%').css('width', '-= 250px');
+            });
+            var width = 0;
+            $('.trackGrid').each(function(index){
+                    width = $(this).css('width');
+            });
+            var beatLength = width / 40;
+            var height = 125; //need to multiply by 2 for expanded?
+            var tableHTML = '';
+            for(var i=0; i<11; i++){
+                tableHTML += '<tr class="gridRow">';
+
+                //for(var j=0; j<width; j+=beatLength){
+                for(var j=0; j<24; j+=1){
+                    tableHTML += '<td class="gridBlock"></td>';
+                }
+
+                tableHTML += '</tr>';
+            }
+            console.log(tableHTML);
+            $('.trackGrid').each(function(index){
+                $(this).html(tableHTML);
+            });
+        });
+      </script>
     </div>
 </div>
