@@ -86,7 +86,7 @@ $(document).ready(function() {
 		const track = model.tracks[trackID];
 	        pressedKeys[event.key] = true;
 	        if (KEYBOARD_DRUMS_MAP[event.key] != null && KEYBOARD_DRUMS_MAP[event.key] != 'undefined') {
-	            track.playNote(KEYBOARD_DRUMS_MAP[event.key], 2);
+	            track.playNote(KEYBOARD_DRUMS_MAP[event.key], 0.5);
 		    oldColors[event.key] = $('#drum-' + KEYBOARD_DRUMS_MAP[event.key]).css('background-color');
 		    $('#drum-' + KEYBOARD_DRUMS_MAP[event.key]).css('background-color', '#999999');
 		}
