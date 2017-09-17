@@ -11,7 +11,7 @@ firebase.initializeApp(config);
 var provider = new firebase.auth.GoogleAuthProvider();
 var database = firebase.database();
 var storage = firebase.storage();
-var historyID = "hack";
+var historyID = window.location.hash.replace("#","");
 
 function FireBaseHandler() {
 }
