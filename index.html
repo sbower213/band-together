@@ -41,15 +41,22 @@
 
             </div>
         </div>
+        <!-- Script for adding a drum machine
         <script>
-            /*$(document).ready(function(){
-                $('.track').on('click', function(){
-                    //open instrument container
-                    $.get('./components/keyboard.html', function(data){
-                        $('#instrumentContainer').html(data);
+                $(document).ready(function(){
+                    $.get('./components/track.html', function(data){
+                        $('#trackContainer').append(data);
+                        initTrack();
+                        $('.track').on('click', function(){
+                            //open instrument container if one doesn't exist
+                            if($('.keyboard').length == 0) {
+                                $.get('./components/drumpad.html', function(data){
+                                    $('#instrumentContainer').html(data);
+                                });
+                            }
+                        });
                     });
                 });
-            });*/
-        </script>
+        </script> -->
     </body>
 </html>
