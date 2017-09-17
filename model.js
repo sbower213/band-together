@@ -108,7 +108,7 @@ Model.prototype.pause = function() {
   if (this.playInterval) {
     clearInterval(this.playInterval);
       this.playInterval = null;
-      //document.getElementById("bgvideo").pause();
+      document.getElementById("bgvideo").pause();
   }
 };
 
