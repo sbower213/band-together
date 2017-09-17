@@ -7,6 +7,7 @@ var config = {
     messagingSenderId: "711340754671"
 };
 
+firebase.initializeApp(config);
 var provider = new firebase.auth.GoogleAuthProvider();
 var database = firebase.database();
 var storage = firebase.storage();
@@ -16,8 +17,11 @@ function FireBaseHandler() {
 }
 
 FireBaseHandler.updateHistory = function(command_index,command) {
-    database.ref("history/"+historyID).set({
-        command_index:command
-    });
+    history_entry = {};
+    
+    console.log(command);
+    history_entry[command_index.toString()+command.sessionId.toString()] = command;
+    
+    database.ref("history/"+historyID).update(history_entry);
     
 }
