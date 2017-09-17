@@ -10,6 +10,21 @@ function nativizeCommand(command) {
     case 1:
         command.__proto__ = ModifyTrack.prototype;
         break;
+    case 2:
+        command.__proto__ = DeleteTrack.prototype;
+        break;
+    case 3:
+        command.__proto__ = Nop.prototype;
+        break;
+    case 4:
+        command.__proto__ = InsertNote.prototype;
+        break;
+    case 5:
+        command.__proto__ = DeleteNote.prototype;
+        break;
+    case 6:
+        command.__proto__ = ProjectSettings.prototype;
+        break;
     }
     return command;
 }

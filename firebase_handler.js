@@ -34,7 +34,7 @@ database.ref("history/"+historyID).on('child_added', function(data){
     var val = data.val();
     command_data = {}
     command_data.index = val.index;
-    command_data.commands = [val]
+    command_data.commands = Array.isArray(val) ? val : [val];
     commandProcessor.receiveCommands(command_data);
     
     //CommandProcessor.receiveCommands()

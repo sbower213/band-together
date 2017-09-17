@@ -26,7 +26,7 @@ CommandProcessor.prototype.fire = function(command) {
 CommandProcessor.prototype.handleCommandList = function(commands) {
     for (var index in commands) {
         var command = commands[index];
-        if (command.sessionId != this.sessionId) {
+        if (command.sessionId != globalSessionId) {
             this.handleRemoteCommand(nativizeCommand(command));
         } else {
             this.inFlight = undefined;

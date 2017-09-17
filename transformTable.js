@@ -1,6 +1,6 @@
 var transformTable = {}
 
-for (var key in commandTypes.keys()) {
+for (var key in commandTypes) {
     transformTable[commandTypes[key]] = {};
 }
 

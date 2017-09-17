@@ -8,6 +8,7 @@ $(document).ready(function() {
     globalSessionId = Math.floor(Math.random() * 10000000);
     
     model.registerAddTrackListener(addTrack);
+    model.registerAddNoteListener(addNote);
 });
 
 function executeAddTrackCommand(){
@@ -45,4 +46,11 @@ function executeModifyTrackCommand(trackId, modification){
 
 function modifyTrack(trackId, modification){
 
+}
+
+function addNote(track, beat, noteData) {
+    var div = $("<div class='note'></div>");
+    div.position({left: beat * 40, top: noteData.pitch * $("#" + track).height() / 12.0});
+    div.css("width", (noteData[duration] * 40) + "px");
+    $("#" + track + " .trackData").append(div);
 }
