@@ -42,7 +42,7 @@ body {
 }
 
 #instrumentContainer{
-    padding: 30 30 50 30;
+    padding: 30 30 30 30;
     z-index: 1000;
     border-bottom-left-radius: 15px;
     border-bottom-right-radius: 15px;
@@ -67,6 +67,7 @@ body {
 .keyboard{
     overflow-x: scroll;
     width: 100%;
+    height: 400px;
     padding-bottom: 10px;
     background-color: black;
 }
