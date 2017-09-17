@@ -6,15 +6,18 @@ $(document).ready(function() {
     model = new Model();
     commandProcessor = new CommandProcessor(model);
     globalSessionId = Math.floor(Math.random() * 10000000);
+    
+    model.registerAddTrackListener(addTrack);
 });
 
 function executeAddTrackCommand(){
     commandProcessor.fire(new AddTrack(model.tracks.length));
 }
 
-function addTrack(){
+function addTrack(instrument, index){
     $.get('./components/track.html', function(data){
-        $('#trackContainer').append(data);
+        $('#trackContainer').append(data); //additional fields for this track?
+        //what do about instrument and index
         $('.track').on('click', function(){
             //open instrument container if one doesn't exist
             if($('#keyboard').length == 0) {

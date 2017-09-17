@@ -5,30 +5,79 @@ function Model() {
   this.tempo = 120.0; // bpm
   this.tracks = [];
   this.trackLength = 16; // steps
+
+  this.addNoteListeners = [];
+  this.deleteNoteListeners = [];
+  this.addTrackListeners = [];
+  this.modifyTrackListeners = [];
+  this.deleteTrackListeners = [];
+  this.projectSettingsListeners = [];
+}
+
+Model.prototype.registerAddNoteListener = function(fn){
+    this.addNoteListeners.push(fn);
+}
+
+Model.prototype.registerDeleteNoteListener = function(fn) {
+    this.deleteNoteListeners.push(fn);
+}
+
+Model.prototype.registerAddTrackListener = function(fn) {
+    this.addTrackListeners.push(fn);
+}
+
+Model.prototype.registerModifyTrackListener = function(fn) {
+    this.modifyTrackListeners.push(fn);
+}
+
+Model.prototype.registerDeleteNoteListener = function(fn) {
+    this.deleteTrackListeners.push(fn);
+}
+
+Model.prototype.registerProjectSettingsListener = function(fn) {
+    this.projectSettingsListeners.push(fn);
 }
 
 Model.prototype.addNote = function(track, beat, noteData) {
     this.tracks[track].addNote(beat, noteData);
+
+    for (var i = 0; i < this.addNoteListeners.length; i++) {
+        this.addNoteListeners[i](track, beat, noteData);
+    }
 };
 
 Model.prototype.deleteNote = function(track, beat, pitch) {
     tracks[track].deleteNote(beat, pitch);
+
+    for (var i = 0; i < this.deleteNoteListeners.length; i++) {
+        this.deleteNoteListeners[i](track, beat, pitch);
+    }
 };
 
 Model.prototype.addTrack = function(instrument, index) {
   this.tracks[index] = new Track(new TrackData(instrument, this.tempo));
+
+  for (var i = 0; i < this.addTrackListeners.length; i++) {
+      this.addTrackListeners[i](instrument, index);
+  }
 };
 
 Model.prototype.modifyTrack = function(index, trackData) {
-
+    for (var i = 0; i < this.modifyTrackListeners.length; i++) {
+        this.modifyTrackListeners[i](index, trackData);
+    }
 };
 
 Model.prototype.deleteTrack = function(index) {
-
+    for (var i = 0; i < this.deleteTrackListeners.length; i++) {
+        this.deleteTrackListeners[i](index);
+    }
 };
 
 Model.prototype.projectSettings = function(settings) {
-
+    for (var i = 0; i < this.projectSettingsListeners.length; i++) {
+        this.projectSettingsListeners[i](settings);
+    }
 };
 
 Model.prototype.pause = function() {
@@ -162,18 +211,18 @@ function testDrums() {
   let synth = new Synth('square', 'square');
   synth.offset = 1200;
   model.addTrack(synth, 1);
-  
+
   model.addNote(1, 0, new NoteData(60, 2));
   model.addNote(1, 0, new NoteData(64, 2));
-  
+
   model.addNote(1, 2, new NoteData(64, 1));
   model.addNote(1, 2, new NoteData(67, 1));
-  
+
   model.addNote(1, 3, new NoteData(71, 1));
   model.addNote(1, 3, new NoteData(74, 1));
-  
+
   model.addNote(1, 4, new NoteData(67, 8));
   model.addNote(1, 4, new NoteData(71, 8));
-  
+
   model.play();
 }
