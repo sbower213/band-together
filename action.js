@@ -11,11 +11,13 @@ $(document).ready(function() {
 });
 
 function executeAddTrackCommand(){
-    commandProcessor.fire(new AddTrack(model.tracks.length));
+    commandProcessor.fire(new AddTrack(globalSessionId + "-" + model.tracks.length));
 }
 
-function addTrack(instrument, index){
+var trackId = 0;
+function addTrack(index, trackData){
     $.get('./components/track.html', function(data){
+        $(data).find(".track").id("track" + index);
         $('#trackContainer').append(data);
         initTrack();
         $('.track').on('click', function(){

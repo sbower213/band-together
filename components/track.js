@@ -2,8 +2,7 @@
 
 function initTrack() {
     $(".note").draggable({ containment: "parent",
-                           grid: [40, 40],
-                           axis: "x",
+                           grid: [40, $(".trackData").height() / 12.0],
                            stop: noteDragged
                          });
 }
