@@ -4,25 +4,25 @@ Command.prototype.resolve = function(model) {
 
 function nativizeCommand(command) {
     switch(command.type) {
-    case 7:
+    case commandTypes.ADD_TRACK:
         command.__proto__ = AddTrack.prototype;
         break;
-    case 1:
+    case commandTypes.MODIFY_TRACK:
         command.__proto__ = ModifyTrack.prototype;
         break;
-    case 2:
+    case commandTypes.DELETE_TRACK:
         command.__proto__ = DeleteTrack.prototype;
         break;
-    case 3:
+    case commandTypes.NOP:
         command.__proto__ = Nop.prototype;
         break;
-    case 4:
+    case commandTypes.INSERT_NOTE:
         command.__proto__ = InsertNote.prototype;
         break;
-    case 5:
+    case commandTypes.DELETE_NOTE:
         command.__proto__ = DeleteNote.prototype;
         break;
-    case 6:
+    case commandTypes.PROJECT_SETTINGS:
         command.__proto__ = ProjectSettings.prototype;
         break;
     }
@@ -74,6 +74,7 @@ Nop.prototype = Object.create(Command.prototype);
 
 
 function InsertNote(track, beat, pitch, noteData, sessionId = globalSessionId) {
+    this.type = commandTypes.INSERT_NOTE;
     this.track = track;
     this.beat = beat;
     this.pitch = pitch;
@@ -82,11 +83,12 @@ function InsertNote(track, beat, pitch, noteData, sessionId = globalSessionId) {
 }
 InsertNote.prototype = Object.create(Command.prototype);
 
-InsertNote.resolve = function(model) {
-    model.addNote(this.track, this.beat, this.pitch, this.noteData);
+InsertNote.prototype.resolve = function(model) {
+    model.addNote(this.track, this.beat, this.noteData);
 };
 
 function DeleteNote(track, beat, pitch, sessionId = globalSessionId) {
+    this.type = commandTypes.DELETE_NOTE;
     this.track = track;
     this.beat = beat;
     this.pitch = pitch;
@@ -94,6 +96,6 @@ function DeleteNote(track, beat, pitch, sessionId = globalSessionId) {
 }
 DeleteNote.prototype = Object.create(Command.prototype);
 
-DeleteNote.resolve = function(model) {
+DeleteNote.prototype.resolve = function(model) {
     model.deleteNote(this.track, this.beat, this.pitch);
 };

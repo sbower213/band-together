@@ -1,12 +1,6 @@
 
 
 function initTrack(track) {
-    track.find(".note").draggable({ containment: "parent",
-                                    grid: [40, $(".trackData").height() / 12.0 * 2],
-                                    stop: noteDragged,
-                                    disabled: true
-                                  });
-
     track.on('click', function(e) {
         if (!$(".track.expanded").is(track)) {
             $(".note").draggable('disable');

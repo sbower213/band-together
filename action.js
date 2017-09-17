@@ -10,6 +10,7 @@ $(document).ready(function() {
     commandProcessor = new CommandProcessor(model);
     globalSessionId = Math.floor(Math.random() * 10000000);
     
+  
     model.registerAddTrackListener(addTrack);
     model.registerAddNoteListener(addNote);
 });
@@ -25,21 +26,27 @@ function executeAddTrackCommand(){
                                            }
                                        }));
     let synth = new Synth('square', 'square');
-    for (let midi = LOWER_MIDI; midi <= UPPER_MIDI; midi++) {
-        console.log('hi');
-        $('#key-' + midi).mousedown(function(midi) {
-	    synth.play(midi, 2);
-	}.bind(midi));
-    }
 }
 
 var trackId = 0;
 function addTrack(index, trackData){
     $.get('./components/track.html', function(data){
         $('#trackContainer').append(data);
+<<<<<<< HEAD
         $(".track").last().attr("id","track" + index);
         $(".delete").last().attr("onclick","deleteTrack('"+index+"')")
         initTrack($("#track" + index));
+=======
+        $(".track").last().attr("id","" + index);
+        initTrack($("#" + index));
+
+        for (var i in queuedNotes) {
+            if (queuedNotes[i].track == index) {
+                addNote(queuedNotes[i].track, queuedNotes[i].beat, queuedNotes[i].noteData);
+                delete queuedNotes[i];
+            }
+        }
+>>>>>>> 48d92b13d86665a356e13f2b2479cdc84baf5f24
     });
 }
 
@@ -59,9 +66,23 @@ function modifyTrack(trackId, modification){
 
 }
 
+var queuedNotes = [];
 function addNote(track, beat, noteData) {
-    var div = $("<div class='note'></div>");
-    div.position({left: beat * 40, top: noteData.pitch * $("#" + track).height() / 12.0});
-    div.css("width", (noteData[duration] * 40) + "px");
-    $("#" + track + " .trackData").append(div);
+    if ($("#" + track).length == 0) {
+        queuedNotes.push({track:track, beat:beat, noteData:noteData});
+        return;
+    }
+    if ($("#" + beat + "-" + noteData.pitch).length == 0) {
+        var div = $("<div class='note' id='" + beat + "-" + noteData.pitch + "'></div>");
+        $("#" + track + " .trackData").append(div);
+        div = $("#" + beat + "-" + noteData.pitch);
+        div.offset({left: beat * 40, top: noteData.pitch * $("#" + track).height() / 12.0});
+        div.css("width", (noteData.duration * 40) + "px");
+        div.draggable({ containment: "parent",
+                        grid: [40, $(".trackData").height() / 12.0 * 2],
+                        stop: noteDragged,
+                        disabled: true
+                      });
+    }
+    
 }
