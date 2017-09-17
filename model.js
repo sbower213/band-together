@@ -1,6 +1,4 @@
 
-
-
 function Model() {
   this.beat = 0; // beats are 16th notes for now. so tempo / 4 is a beat.
   this.playInterval = null;
@@ -105,7 +103,7 @@ function Note(noteData) {
     this.noteData = noteData;
 };
 
-  
+
 
 function NoteData(pitch, duration) {
   this.pitch = pitch; // MIDI value
@@ -119,16 +117,16 @@ function testModel() {
   let synth = new Synth('square', 'square');
   synth.offset = 1200;
   model.addTrack(synth, 0);
-  
+
   model.addNote(0, 0, new NoteData(60, 2));
   model.addNote(0, 0, new NoteData(64, 2));
-  
+
   model.addNote(0, 4, new NoteData(64, 2));
   model.addNote(0, 4, new NoteData(67, 2));
-  
+
   model.addNote(0, 8, new NoteData(67, 4));
   model.addNote(0, 8, new NoteData(71, 4));
-  
+
   model.addNote(0, 12, new NoteData(64, 2));
   model.addNote(0, 12, new NoteData(67, 2));
 

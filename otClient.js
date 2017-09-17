@@ -7,23 +7,23 @@ function CommandProcessor(model) {
     this.model = model;
     this.inFlight = undefined;
     this.serverCommandCount = 0;
-    
+
     this.inverses = [];   // For undo. TODO
 }
 
-CommandProcessor.fire = function(command) {
-    this.commandList.append(command);
-    this.buffer.append(command);
-    this.unsyncedCommands.append(command);
+CommandProcessor.prototype.fire = function(command) {
+    this.commandList.push(command);
+    this.buffer.push(command);
+    this.unsyncedCommands.push(command);
 
     command.resolve(this.model);
 
     if (!this.inFlight) {
-        sendCommand();
+        this.sendCommand();
     }
 };
 
-CommandProcessor.handleCommandList = function(commands) {
+CommandProcessor.prototype.handleCommandList = function(commands) {
     for (var command in commands) {
         if (command.sessionId != this.sessionId) {
             handleRemoteCommand(command);
@@ -33,7 +33,7 @@ CommandProcessor.handleCommandList = function(commands) {
     }
 }
 
-CommandProcessor.handleRemoteCommand = function(command) {
+CommandProcessor.prototype.handleRemoteCommand = function(command) {
     var bufferTransform = command;
     if (this.inFlight) {
         bufferTransform = this.inFlight.transform(command);
@@ -42,22 +42,22 @@ CommandProcessor.handleRemoteCommand = function(command) {
     for (var i = 0; i < buffer.length; i++) {
         buffer[i] = bufferTransform.transform(buffer[i]);
     }
-    
+
 
     var cPrime = command;
     for (var i = 0; i < unsyncedCommands.length; i++) {
         cPrime = unsyncedCommands[i].transform(cPrime);
     }
-    this.commandList.append(command);
+    this.commandList.push(command);
     command.resolve(this.model);
 }
 
-CommandProcessor.sendCommand() {
+CommandProcessor.prototype.sendCommand = function() {
     if (!this.inFlight) {
         var command = this.buffer[0];
         this.buffer = this.buffer.slice(1);
         this.unsyncedCommands = this.buffer.slice(1);
-    
+
         // Firebase shit to send command over, with serverCommandCount
 
         this.inFlight = command;
@@ -65,10 +65,10 @@ CommandProcessor.sendCommand() {
 }
 
 // Trigger this from Firebase
-CommandProcessor.receiveCommands = function(data) {
+CommandProcessor.prototype.receiveCommands = function(data) {
     handleCommandList(data.commands);
     this.serverCommandCount = data.commandCount;
-    
+
     if (!this.inFlight) {
         this.sendCommand();
     }

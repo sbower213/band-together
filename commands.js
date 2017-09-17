@@ -9,7 +9,7 @@ function AddTrack(index, sessionId = globalSessionId) {
     this.index = index;
     this.sessionId = sessionId;
 }
-AddTrack.prototype = Command.prototype;
+AddTrack.prototype = Object.create(Command.prototype);
 
 AddTrack.prototype.resolve = function(model) {
     model.addTrack(this.index);
@@ -22,7 +22,7 @@ function ModifyTrack(index, trackData, sessionId = globalSessionId) {
     this.trackData = trackData;
     this.sessionId = sessionId;
 }
-ModifyTrack.prototype = Command.prototype;
+ModifyTrack.prototype = Object.create(Command.prototype);
 
 ModifyTrack.prototype.resolve = function(model) {
     model.modifyTrack(this.index, this.trackData);
@@ -34,7 +34,7 @@ function DeleteTrack(index, sessionId = globalSessionId) {
     this.index = index;
     this.sessionId = sessionId;
 }
-DeleteTrack.prototype = Command.prototype;
+DeleteTrack.prototype = Object.create(Command.prototype);
 
 DeleteTrack.prototype.resolve = function(model) {
     model.deleteTrack(this.index);
@@ -44,7 +44,7 @@ DeleteTrack.prototype.resolve = function(model) {
 function Nop(sessionId = globalSessionId) {
     this.sessionId = sessionId;
 }
-Nop.prototype = Command.prototype;
+Nop.prototype = Object.create(Command.prototype);
 
 
 function InsertNote(track, beat, pitch, noteData, sessionId = globalSessionId) {
@@ -54,7 +54,7 @@ function InsertNote(track, beat, pitch, noteData, sessionId = globalSessionId) {
     this.noteData = noteData;
     this.sessionId = sessionId;
 }
-InsertNote.prototype = Command.prototype;
+InsertNote.prototype = Object.create(Command.prototype);
 
 InsertNote.resolve = function(model) {
     model.addNote(this.track, this.beat, this.pitch, this.noteData);
@@ -66,7 +66,7 @@ function DeleteNote(track, beat, pitch, sessionId = globalSessionId) {
     this.pitch = pitch;
     this.sessionId = sessionId;
 }
-DeleteNote.prototype = Command.prototype;
+DeleteNote.prototype = Object.create(Command.prototype);
 
 DeleteNote.resolve = function(model) {
     model.deleteNote(this.track, this.beat, this.pitch);
