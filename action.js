@@ -30,9 +30,16 @@ var trackId = 0;
 function addTrack(index, trackData){
     $.get('./components/track.html', function(data){
         $('#trackContainer').append(data);
-        $(".track").last().attr("id","track" + index);
+        $(".track").last().attr("id","" + index);
         $(".delete").last().attr("onclick","deleteTrack('"+index+"')")
-        initTrack($("#track" + index));
+        initTrack($("#" + index));
+
+        for (var i in queuedNotes) {
+            if (queuedNotes[i].track == index) {
+                addNote(queuedNotes[i].track, queuedNotes[i].beat, queuedNotes[i].noteData);
+                delete queuedNotes[i];
+            }
+        }
     });
 }
 
@@ -41,7 +48,7 @@ function executeDeleteTrackCommand(trackId){
 }
 
 function deleteTrack(track_index){
-    $('#track'+track_index).remove();
+    $('#'+track_index).remove();
 }
 
 function executeModifyTrackCommand(trackId, modification){
