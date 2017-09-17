@@ -1,4 +1,15 @@
 
+.track{
+    background-color: #777777;
+    margin-bottom: 5px;
+    height: 125px;
+    position: relative;
+    cursor: pointer;
+}
+
+.track.expanded {
+    height: 250px;
+}
 
 .trackData {
     position: relative;

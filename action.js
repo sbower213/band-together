@@ -11,7 +11,7 @@ $(document).ready(function() {
 });
 
 function executeAddTrackCommand(){
-    commandProcessor.fire(new AddTrack(globalSessionId + "-" + model.tracks.length,
+    commandProcessor.fire(new AddTrack(globalSessionId + "-" + Object.keys(model.tracks).length,
                                        {
                                            tempo:120,
                                            instrument:{
@@ -25,17 +25,9 @@ function executeAddTrackCommand(){
 var trackId = 0;
 function addTrack(index, trackData){
     $.get('./components/track.html', function(data){
-        $(data).find(".track").attr("id","track" + index);
         $('#trackContainer').append(data);
-        initTrack();
-        $('.track').on('click', function(){
-            //open instrument container if one doesn't exist
-            if($('#keyboard').length == 0) {
-                $.get('./components/keyboard.html', function(data){
-                    $('#instrumentContainer').html(data);
-                });
-            }
-        });
+        $(".track").last().attr("id","track" + index);
+        initTrack($("#track" + index));
     });
 }
 
