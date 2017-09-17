@@ -112,7 +112,22 @@ function addTrack(index, trackData){
         }
     });
 }
-         
+
+
+function changeInstrument() {
+  newName = $('#instrumentName').val();
+  if (expandedTrack) {
+    const trackID = expandedTrack[0].id;
+
+    if (newName == 'synth') {
+      model.tracks[trackID].instrument = new Synth('square', 'square');
+    } else if (newName == 'drums') {
+      model.tracks[trackID].instrument = new Drums();
+    } else if (newName == 'microphone') {
+
+    }
+  }
+}
 
 function executeDeleteTrackCommand(trackId){
     commandProcessor.fire(new DeleteTrack(trackId));
