@@ -10,6 +10,17 @@ body{
     height: 50%;
     background-color: #116622;
     overflow-y: scroll;
+    position: relative;
+}
+
+#playhead {
+    position:absolute;
+    left:0px;
+    background-color:#ff0000;
+    width:2px;
+    height:100%;
+    border-top:3px solid #ff0000;
+    z-index: 100;
 }
 
 #instrumentContainer{

@@ -44,6 +44,8 @@ $(document).ready(function() {
     model.registerDeleteTrackListener(deleteTrack);
     model.registerDeleteNoteListener(deleteNote);
     
+    model.registerPlayheadListener(updatePlayhead);
+    
     $(document).keydown(function(event) {
         if (pressedKeys[event.key]) {
 	  return;
@@ -72,6 +74,11 @@ $(document).ready(function() {
     });
 });
 
+function updatePlayhead(beat) {
+    $("#playhead").css("left", beat * 40)
+        .animate({left: "+=50"},
+                 1000 / model.tempo);
+}
 
 
 function executeAddTrackCommand(){

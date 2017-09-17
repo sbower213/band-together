@@ -11,7 +11,8 @@ function Model() {
   this.addTrackListeners = [];
   this.modifyTrackListeners = [];
   this.deleteTrackListeners = [];
-  this.projectSettingsListeners = [];
+    this.projectSettingsListeners = [];
+    this.playheadListeners = [];
 }
 
 Model.prototype.registerAddNoteListener = function(fn){
@@ -36,6 +37,10 @@ Model.prototype.registerDeleteTrackListener = function(fn) {
 
 Model.prototype.registerProjectSettingsListener = function(fn) {
     this.projectSettingsListeners.push(fn);
+}
+
+Model.prototype.registerPlayheadListener = function(fn) {
+    this.playheadListeners.push(fn);
 }
 
 Model.prototype.addNote = function(track, beat, noteData) {
@@ -105,7 +110,11 @@ Model.prototype.play = function() {
       for (let i = 0; i < keys.length; i++) {
 	this.tracks[keys[i]].play(this.beat);
       }
-      this.beat = (this.beat + 1) % this.trackLength;
+        this.beat = (this.beat + 1) % this.trackLength;
+
+        for (var i = 0; i < this.playheadListeners.length; i++) {
+            this.playheadListeners[i](this.beat);
+        }
     }.bind(this),
     1.0 / this.tempo / 4.0 * 60.0 * 1000.0,
   );
@@ -145,8 +154,8 @@ Track.prototype.deleteNote = function(beat, pitch) {
     if (!this.notes[beat]) {
         return;
     }
-    for (var i = 0; i < this.notes[beat]; i++) {
-        if (this.notes[beat][i].pitch == pitch) {
+    for (var i = 0; i < this.notes[beat].length; i++) {
+        if (this.notes[beat][i].noteData.pitch == pitch) {
             this.notes[beat].splice(i, 1);
             return;
         }
