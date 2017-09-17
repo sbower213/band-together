@@ -54,6 +54,7 @@ $(document).ready(function() {
     model.registerAddNoteListener(addNote);
     model.registerDeleteTrackListener(deleteTrack);
     model.registerDeleteNoteListener(deleteNote);
+    model.registerModifyTrackListener(modifyTrack);
     
     model.registerPlayheadListener(updatePlayhead);
     
@@ -173,8 +174,8 @@ function executeModifyTrackCommand(trackId, modification){
     commandProcessor.fire(new ModifyTrack(trackId, modification));
 }
 
-function modifyTrack(trackId, modification){
-
+function modifyTrack(trackId, trackData){
+    $("#" + trackId).find(".instrumentName").val(trackData.instrument.name);
 }
 
 var queuedNotes = [];

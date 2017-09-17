@@ -70,6 +70,15 @@ Model.prototype.addTrack = function(index, trackData) {
 };
 
 Model.prototype.modifyTrack = function(index, trackData) {
+    this.tracks[index].trackData = trackData;
+    if (trackData.instrument.name == 'synth') {
+	this.tracks[index].instrument = new Synth('square', 'square');
+    } else if (trackData.instrument.name == 'drums') {
+	this.tracks[index].instrument = new Drums();
+    } else if (trackData.instrument.name == 'microphone') {
+	this.tracks[index].instrument = new Microphone();
+    }
+    
     for (var i = 0; i < this.modifyTrackListeners.length; i++) {
         this.modifyTrackListeners[i](index, trackData);
     }

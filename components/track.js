@@ -1,29 +1,55 @@
+function openDrums(track) {
+    const trackID = track[0].id;
+    $('#instrumentContainer').empty();
+    $.get('./components/drumpad.html', function(data){
+        $('#instrumentContainer').html(data);
+	for (let midi = 0; midi <= 9; midi++) {
+	    $('#drum-' + midi).mousedown(function(event) {
+		const midi = event.target.id.split('-')[1];
+		model.tracks[trackID].playNote(midi, 1);
+	    });
+	}
+    });
+}
 
+function openKeyboard(track) {
+    $('#instrumentContainer').empty();
+    $.get('./components/keyboard.html', function(data){
+        $('#instrumentContainer').html(data);
+	for (let midi = LOWER_MIDI; midi <= UPPER_MIDI; midi++) {
+	    $('#key-' + midi).mousedown(function(event) {
+		const trackID = track[0].id;
+		const midi = event.target.id.split('-')[1];
+		model.tracks[trackID].playNote(midi, 2);
+	    });
+	}
+    });
+}
+
+function openInstrument(instrumentName, track) {
+    if(instrumentName == "synth") {
+        if($('#keyboard').length == 0) {
+            openKeyboard(track);
+        }
+    } else if (instrumentName == "drums") {
+        if($('#drumpad').length == 0) {
+            openDrums(track);
+        }
+    }
+}
 
 function initTrack(track) {
     const select = track.find("select");
+    const trackID = track[0].id;
+    select.val(model.tracks[trackID].trackData.instrument.name);
     select.change(function(event) {
 	const trackID = track[0].id;
 	model.tracks[trackID].trackData.instrument.name = select.val();
-	if (select.val() == 'synth') {
-	    model.tracks[trackID].instrument = new Synth('square', 'square');
-	} else if (select.val() == 'drums') {
-	    model.tracks[trackID].instrument = new Drums();
+        openInstrument(select.val(), track);
 
-	    $('#instrumentContainer').empty();
-	    $.get('./components/drumpad.html', function(data){
-                $('#instrumentContainer').html(data);
-		for (let midi = 0; midi <= 9; midi++) {
-		    $('#drum-' + midi).mousedown(function(event) {
-		        const midi = event.target.id.split('-')[1];
-		        model.tracks[trackID].playNote(midi, 1);
-		    });
-		}
-            });
-	    
-	} else if (select.val() == 'microphone') {
-	    model.tracks[trackID].instrument = new Microphone();
-	}
+        commandProcessor.fire(new ModifyTrack(trackID,
+                                            model.tracks[trackID].trackData));
+                                            
     });
     track.find(".trackData").on('click', function(e) {
         if (!$(".track.expanded").is(track)) {
@@ -41,18 +67,8 @@ function initTrack(track) {
             });
             track.find(".note").draggable('enable');
             //open instrument container if one doesn't exist
-            if($('#keyboard').length == 0) {
-                $.get('./components/keyboard.html', function(data){
-                    $('#instrumentContainer').html(data);
-		    for (let midi = LOWER_MIDI; midi <= UPPER_MIDI; midi++) {
-		        $('#key-' + midi).mousedown(function(event) {
-		            const trackID = track[0].id;
-		            const midi = event.target.id.split('-')[1];
-		            model.tracks[trackID].playNote(midi, 2);
-			});
-		    }
-                });
-            }
+            var instrumentName = model.tracks[trackID].trackData.instrument.name;
+            openInstrument(instrumentName, track);
         } else {
             var mouseX = e.pageX - track.find(".trackData").offset().left;
             var mouseY = e.pageY - track.find(".trackData").parent().offset().top;
