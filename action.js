@@ -113,6 +113,11 @@ function executeDeleteTrackCommand(trackId){
 function deleteTrack(track_index){
     deletedTracks.push(track_index);
     $('#'+track_index).remove();
+    console.log($(".track").length);
+    tracks_num = $(".track").length
+    if(tracks_num < 1) {
+        $(".keyboard").css("display","none");
+    }
 }
 
 function executeModifyTrackCommand(trackId, modification){
