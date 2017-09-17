@@ -38,6 +38,7 @@
 
 .trackGrid {
     height: 100%;
+    width: 100%;
     border-collapse: collapse;
     background-color: white;
 }
@@ -46,6 +47,5 @@
     border: 1px solid black;
     padding: 0px;
     box-sizing: border-box;
-    width: 40px;
-    
+    width: 53.583px;
 }

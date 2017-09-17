@@ -4,7 +4,7 @@ function Model() {
   this.playInterval = null;
   this.tempo = 120.0; // bpm
   this.tracks = {};
-  this.trackLength = 28; // steps
+  this.trackLength = 16; // steps
 
     this.recording = false;
     
