@@ -11,10 +11,12 @@ ServerCommandProcessor.receiveCommand(command, commandCount) {
 
     this.commandList.append(command);
     this.unsentCommands.append(command);
+    
+    this.sendCommands();
 }
 
 ServerCommandProcessor.sendCommands() {
     //Broadcast unsentCommands and commandList.length
-
+    
     this.unsentCommands = [];
 }
