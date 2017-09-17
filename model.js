@@ -132,3 +132,48 @@ function testModel() {
 
   model.play();
 }
+
+function testDrums() {
+  let model = new Model();
+  let drums = new Drums();
+  model.addTrack(drums, 0);
+
+  // kick
+  model.addNote(0, 0, new NoteData(0, 1));
+  model.addNote(0, 4, new NoteData(0, 1));
+  model.addNote(0, 8, new NoteData(0, 1));
+  model.addNote(0, 12, new NoteData(0, 1));
+
+  // clap
+  model.addNote(0, 4, new NoteData(1, 1));
+  model.addNote(0, 12, new NoteData(1, 1));
+
+  // hi hat
+  model.addNote(0, 0, new NoteData(3, 1));
+  model.addNote(0, 2, new NoteData(3, 1));
+  model.addNote(0, 4, new NoteData(3, 1));
+  model.addNote(0, 6, new NoteData(3, 1));
+  model.addNote(0, 8, new NoteData(3, 1));
+  model.addNote(0, 10, new NoteData(3, 1));
+  model.addNote(0, 12, new NoteData(3, 1));
+  model.addNote(0, 14, new NoteData(3, 1));
+
+  // melody
+  let synth = new Synth('square', 'square');
+  synth.offset = 1200;
+  model.addTrack(synth, 1);
+  
+  model.addNote(1, 0, new NoteData(60, 2));
+  model.addNote(1, 0, new NoteData(64, 2));
+  
+  model.addNote(1, 2, new NoteData(64, 1));
+  model.addNote(1, 2, new NoteData(67, 1));
+  
+  model.addNote(1, 3, new NoteData(71, 1));
+  model.addNote(1, 3, new NoteData(74, 1));
+  
+  model.addNote(1, 4, new NoteData(67, 8));
+  model.addNote(1, 4, new NoteData(71, 8));
+  
+  model.play();
+}
