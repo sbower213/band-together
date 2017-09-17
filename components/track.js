@@ -20,6 +20,13 @@ function initTrack(track) {
             if($('#keyboard').length == 0) {
                 $.get('./components/keyboard.html', function(data){
                     $('#instrumentContainer').html(data);
+		    for (let midi = LOWER_MIDI; midi <= UPPER_MIDI; midi++) {
+		        $('#key-' + midi).mousedown(function(event) {
+		            const trackID = track[0].id.split('track')[1];
+		            const midi = event.target.id.split('-')[1];
+		            model.tracks[trackID].instrument.play(midi, 2);
+			});
+		    }
                 });
             }
         } else {

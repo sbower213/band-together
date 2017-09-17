@@ -1,3 +1,6 @@
+const LOWER_MIDI = 36;
+const UPPER_MIDI = 107;
+
 var commandProcessor;
 var model;
 var globalSessionId;
@@ -6,7 +9,7 @@ $(document).ready(function() {
     model = new Model();
     commandProcessor = new CommandProcessor(model);
     globalSessionId = Math.floor(Math.random() * 10000000);
-    
+  
     model.registerAddTrackListener(addTrack);
     model.registerAddNoteListener(addNote);
 });
