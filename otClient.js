@@ -59,10 +59,11 @@ CommandProcessor.prototype.sendCommand = function() {
         var command = this.buffer[0];
         this.buffer = this.buffer.slice(1);
         this.unsyncedCommands = this.buffer.slice(1);
-        // Firebase shit to send command over, with serverCommandCount
-        FireBaseHandler.updateHistory(this.serverCommandCount, command);
 
         this.inFlight = command;
+
+        // Firebase shit to send command over, with serverCommandCount
+        FireBaseHandler.updateHistory(this.serverCommandCount, command);
     }
 }
 
