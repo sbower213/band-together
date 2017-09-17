@@ -17,14 +17,11 @@
       <script>
         $(document).ready(function(){
 
-            $('.trackGrid').each(function(index){
-                $(this).css('width', '100%').css('width', '-= 250px');
-            });
             var width = 0;
             $('.trackGrid').each(function(index){
                     width = $(this).css('width');
             });
-            var beatLength = width / 40;
+            var beatLength = width / 40 * 1.2;
             var height = 125; //need to multiply by 2 for expanded?
             var tableHTML = '';
             for(var i=0; i<11; i++){
