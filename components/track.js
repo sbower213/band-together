@@ -1,6 +1,30 @@
 
 
 function initTrack(track) {
+    const select = track.find("select");
+    select.change(function(event) {
+	const trackID = track[0].id;
+	model.tracks[trackID].trackData.instrument.name = select.val();
+	if (select.val() == 'synth') {
+	    model.tracks[trackID].instrument = new Synth('square', 'square');
+	} else if (select.val() == 'drums') {
+	    model.tracks[trackID].instrument = new Drums();
+
+	    $('#instrumentContainer').empty();
+	    $.get('./components/drumpad.html', function(data){
+                $('#instrumentContainer').html(data);
+		for (let midi = 0; midi <= 9; midi++) {
+		    $('#drum-' + midi).mousedown(function(event) {
+		        const midi = event.target.id.split('-')[1];
+		        model.tracks[trackID].playNote(midi, 1);
+		    });
+		}
+            });
+	    
+	} else if (select.val() == 'microphone') {
+	    model.tracks[trackID].instrument = new Microphone();
+	}
+    });
     track.on('click', function(e) {
         if (!$(".track.expanded").is(track)) {
 	    expandedTrack = track;
