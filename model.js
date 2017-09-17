@@ -15,8 +15,8 @@ Model.prototype.deleteNote = function(track, beat, pitch) {
     tracks[track].deleteNote(beat, pitch);
 };
 
-Model.prototype.addTrack = function(instrument, index) {
-  this.tracks[index] = new Track(new TrackData(instrument, this.tempo));
+Model.prototype.addTrack = function(index, trackData) {
+  this.tracks[index] = new Track(trackData);
 };
 
 Model.prototype.modifyTrack = function(index, trackData) {
@@ -116,7 +116,7 @@ function testModel() {
   let model = new Model();
   let synth = new Synth('square', 'square');
   synth.offset = 1200;
-  model.addTrack(synth, 0);
+  model.addTrack(0, new TrackData(synth, model.tempo));
 
   model.addNote(0, 0, new NoteData(60, 2));
   model.addNote(0, 0, new NoteData(64, 2));
@@ -136,7 +136,7 @@ function testModel() {
 function testDrums() {
   let model = new Model();
   let drums = new Drums();
-  model.addTrack(drums, 0);
+  model.addTrack(0, new TrackData(drums, model.tempo));
 
   // kick
   model.addNote(0, 0, new NoteData(0, 1));
@@ -161,7 +161,7 @@ function testDrums() {
   // melody
   let synth = new Synth('square', 'square');
   synth.offset = 1200;
-  model.addTrack(synth, 1);
+  model.addTrack(1, new TrackData(synth, model.tempo));
   
   model.addNote(1, 0, new NoteData(60, 2));
   model.addNote(1, 0, new NoteData(64, 2));
