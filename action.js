@@ -1,18 +1,68 @@
 const LOWER_MIDI = 36;
 const UPPER_MIDI = 107;
+const KEYBOARD_MAP = {
+  'a': 60,
+  'w': 61,
+  's': 62,
+  'e': 63,
+  'd': 64,
+  'f': 65,
+  't': 66,
+  'g': 67,
+  'y': 68,
+  'h': 69,
+  'u': 70,
+  'j': 71,
+  'k': 72,
+  'o': 73,
+  'l': 74,
+  'p': 75,
+  ';': 76,
+  '\'': 77,
+  ']': 78,
+}
 
 var commandProcessor;
 var model;
+var pressedKeys;
 var globalSessionId;
+var expandedTrack;
 
 $(document).ready(function() {
     model = new Model();
     commandProcessor = new CommandProcessor(model);
+    pressedKeys = {}
     globalSessionId = Math.floor(Math.random() * 10000000);
-
+    expandedTrack = null;
+  
     model.registerAddTrackListener(addTrack);
     model.registerAddNoteListener(addNote);
+
+    $(document).keydown(function(event) {
+        if (pressedKeys[event.key]) {
+	  return;
+	}
+        if (expandedTrack) {
+	    const trackID = expandedTrack[0].id.split('track')[1];
+	    const name = model.tracks[trackID].trackData.instrument.name;;
+	    if (name == 'synth') {
+ 	        const instr = model.tracks[trackID].instrument;
+	      pressedKeys[event.key] = true;
+	      if (KEYBOARD_MAP[event.key]) {
+	        instr.play(KEYBOARD_MAP[event.key], 2);
+	      }
+	    }
+	}
+    });
+
+    $(document).keyup(function(event) {
+      if (pressedKeys[event.key]) {
+	pressedKeys[event.key] = false;
+      }
+    });
 });
+
+
 
 function executeAddTrackCommand(){
     commandProcessor.fire(new AddTrack(globalSessionId + "-" + Object.keys(model.tracks).length,

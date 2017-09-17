@@ -3,6 +3,7 @@
 function initTrack(track) {
     track.on('click', function(e) {
         if (!$(".track.expanded").is(track)) {
+	    expandedTrack = track;
             $(".note").draggable('disable');
             $(".track.expanded .note").each(function(index) {
                 $(this).position({left:$(this).position().left, top:.5 * $(this).position().top});
