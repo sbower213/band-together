@@ -16,15 +16,18 @@ CommandProcessor.prototype.fire = function(command) {
 
     command.resolve(this.model);
 
+    this.serverCommandCount++;
+
     if (!this.inFlight) {
         this.sendCommand();
     }
 };
 
 CommandProcessor.prototype.handleCommandList = function(commands) {
-    for (var command in commands) {
+    for (var index in commands) {
+        var command = commands[index];
         if (command.sessionId != this.sessionId) {
-            handleRemoteCommand(command);
+            this.handleRemoteCommand(nativizeCommand(command));
         } else {
             this.inFlight = undefined;
         }
@@ -37,28 +40,27 @@ CommandProcessor.prototype.handleRemoteCommand = function(command) {
         bufferTransform = this.inFlight.transform(command);
         this.inFlight = command.transform(this.inFlight);
     }
-    for (var i = 0; i < buffer.length; i++) {
-        buffer[i] = bufferTransform.transform(buffer[i]);
+    for (var i = 0; i < this.buffer.length; i++) {
+        this.buffer[i] = bufferTransform.transform(buffer[i]);
     }
 
 
     var cPrime = command;
-    for (var i = 0; i < unsyncedCommands.length; i++) {
-        cPrime = unsyncedCommands[i].transform(cPrime);
+    for (var i = 0; i < this.unsyncedCommands.length; i++) {
+        cPrime = this.unsyncedCommands[i].transform(cPrime);
     }
     this.commandList.push(command);
     command.resolve(this.model);
+    this.serverCommandCount++;
 }
 
 CommandProcessor.prototype.sendCommand = function() {
-    if (!this.inFlight) {
+    if (!this.inFlight && this.buffer.length > 0) {
         var command = this.buffer[0];
         this.buffer = this.buffer.slice(1);
         this.unsyncedCommands = this.buffer.slice(1);
         // Firebase shit to send command over, with serverCommandCount
         FireBaseHandler.updateHistory(this.serverCommandCount, command);
-        
-        this.serverCommandCount += 1;
 
         this.inFlight = command;
     }
@@ -66,8 +68,9 @@ CommandProcessor.prototype.sendCommand = function() {
 
 // Trigger this from Firebase
 CommandProcessor.prototype.receiveCommands = function(data) {
-    handleCommandList(data.commands);
-    this.serverCommandCount = data.commandCount;
+    console.log("received command!");
+    console.log(data);
+    this.handleCommandList(data.commands);
 
     if (!this.inFlight) {
         this.sendCommand();

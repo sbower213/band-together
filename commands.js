@@ -2,7 +2,17 @@ Command.prototype.resolve = function(model) {
     // ABSTRACT METHOD!
 }
 
-
+function nativizeCommand(command) {
+    switch(command.type) {
+    case 7:
+        command.__proto__ = AddTrack.prototype;
+        break;
+    case 1:
+        command.__proto__ = ModifyTrack.prototype;
+        break;
+    }
+    return command;
+}
 
 function AddTrack(index, trackData, sessionId = globalSessionId) {
     this.type = commandTypes.ADD_TRACK;

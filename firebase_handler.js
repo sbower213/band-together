@@ -28,14 +28,14 @@ FireBaseHandler.updateHistory = function(command_index,command) {
 }
 
 // Call Command Processor recieve commands function on change up of data
-database.ref("history/"+historyID).on('child_changed', function(data){
+database.ref("history/"+historyID).on('child_added', function(data){
+    console.log("child changed");
+    console.log(data.val());
+    var val = data.val();
     command_data = {}
-    command_data.serverCommandCount = data.numChildren();
-    command_data.commands = []
-    data.forEach(function(elt){
-        command_data.commands.push(elt);
-    })
-    CommandProcessor.receiveCommands(command_data);
+    command_data.index = val.index;
+    command_data.commands = [val]
+    commandProcessor.receiveCommands(command_data);
     
     //CommandProcessor.receiveCommands()
 });
