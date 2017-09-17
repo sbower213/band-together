@@ -58,7 +58,7 @@ Model.prototype.addTrack = function(index, trackData) {
   this.tracks[index] = new Track(trackData);
 
   for (var i = 0; i < this.addTrackListeners.length; i++) {
-      this.addTrackListeners[i](instrument, index);
+      this.addTrackListeners[i](index, trackData);
   }
 };
 
@@ -116,8 +116,9 @@ function Track(trackData) {
     this.notes = [];
 
     if (this.trackData.instrument.name == "synth") {
-        this.instrument = new Synth(this.trackData.instrument.mix,
-                                    this.trackData.instrument.offset);
+        this.instrument = new Synth('square', 'square');
+        this.instrument.offset = this.trackData.instrument.offset;
+        this.instrument.mix = this.trackData.instrument.mix;
     }
 };
 
@@ -144,6 +145,12 @@ Track.prototype.play = function(beat) {
     ); // Assume this is common interface among instruments
   }
 }
+
+
+function TrackData(instrument, tempo) {
+  this.instrument = instrument;
+  this.tempo = tempo;
+};
 
 
 
