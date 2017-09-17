@@ -47,6 +47,26 @@ function initTrack(track) {
     });
 }
 
-function noteDragged() {
-    console.log("note dragged!");
+function noteDragged(e, ui) {
+    var parent = ui.helper.parent();
+
+    var id = ui.helper.attr("id");
+    var beat = parseInt(id.substring(0,id.indexOf("-")));
+    var pitch = parseInt(id.substring(id.indexOf("-") + 1, id.indexOf("_")));
+    var track = id.substring(id.indexOf("_") + 1);
+    commandProcessor.fire(new DeleteNote(track,
+                                         beat,
+                                         pitch));
+
+    var mouseX = e.pageX - parent.offset().left;
+    var mouseY = e.pageY - parent.offset().top;        
+    beat = Math.floor(mouseX / 40);
+    pitch = Math.floor(mouseY / (parent.height() / 12.0)) + 60;
+    commandProcessor.fire(new InsertNote(track,
+                                         beat,
+                                         pitch,
+                                         {
+                                             pitch: pitch,
+                                             duration: 1
+                                         }));
 }

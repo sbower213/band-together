@@ -42,7 +42,8 @@ $(document).ready(function() {
     model.registerAddTrackListener(addTrack);
     model.registerAddNoteListener(addNote);
     model.registerDeleteTrackListener(deleteTrack);
-
+    model.registerDeleteNoteListener(deleteNote);
+    
     $(document).keydown(function(event) {
         if (pressedKeys[event.key]) {
 	  return;
@@ -129,17 +130,29 @@ function addNote(track, beat, noteData) {
         queuedNotes.push({track:track, beat:beat, noteData:noteData});
         return;
     }
-    if ($("#" + beat + "-" + noteData.pitch).length == 0) {
-        var div = $("<div class='note' id='" + beat + "-" + noteData.pitch + "'></div>");
+    if ($("#" + beat + "-" + noteData.pitch + "_" + track).length == 0) {
+        var div = $("<div class='note' id='" + beat + "-" + noteData.pitch + "_" + track + "'></div>");
         $("#" + track + " .trackData").append(div);
-        div = $("#" + beat + "-" + noteData.pitch);
+        div = $("#" + beat + "-" + noteData.pitch + "_" + track);
         div.offset({left: beat * 40, top: (noteData.pitch - 60) * $("#" + track).height() / 12.0});
         div.css("width", (noteData.duration * 40) + "px");
         div.draggable({ containment: "parent",
                         grid: [40, $(".trackData").height() / 12.0 * 2],
-                        stop: noteDragged,
-                        disabled: true
+                        stop: noteDragged
                       });
     }
 
+}
+
+function deleteNote(track, beat, pitch) {
+    $("#" + beat + "-" + pitch + "_" + track).remove();
+    for (var i in queuedNotes) {
+        if (queuedNotes[i].track == track &&
+            queuedNotes[i].beat == beat &&
+            queuedNotes[i].noteData.pitch == pitch) {
+            delete queuedNotes[i];
+            return;
+        }
+            
+    }
 }

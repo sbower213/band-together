@@ -47,7 +47,7 @@ Model.prototype.addNote = function(track, beat, noteData) {
 };
 
 Model.prototype.deleteNote = function(track, beat, pitch) {
-    tracks[track].deleteNote(beat, pitch);
+    this.tracks[track].deleteNote(beat, pitch);
 
     for (var i = 0; i < this.deleteNoteListeners.length; i++) {
         this.deleteNoteListeners[i](track, beat, pitch);
@@ -133,7 +133,15 @@ Track.prototype.addNote = function(beat, notedata) {
 };
 
 Track.prototype.deleteNote = function(beat, pitch) {
-
+    if (!this.notes[beat]) {
+        return;
+    }
+    for (var i = 0; i < this.notes[beat]; i++) {
+        if (this.notes[beat][i].pitch == pitch) {
+            this.notes[beat].splice(i, 1);
+            return;
+        }
+    }
 };
 
 Track.prototype.play = function(beat) {
