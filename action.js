@@ -1,18 +1,74 @@
 const LOWER_MIDI = 36;
 const UPPER_MIDI = 107;
+const KEYBOARD_MAP = {
+  'a': 60,
+  'w': 61,
+  's': 62,
+  'e': 63,
+  'd': 64,
+  'f': 65,
+  't': 66,
+  'g': 67,
+  'y': 68,
+  'h': 69,
+  'u': 70,
+  'j': 71,
+  'k': 72,
+  'o': 73,
+  'l': 74,
+  'p': 75,
+  ';': 76,
+  '\'': 77,
+  ']': 78,
+}
 
 var commandProcessor;
 var model;
+var pressedKeys;
 var globalSessionId;
+var expandedTrack;
+var oldColors;
 
 $(document).ready(function() {
     model = new Model();
     commandProcessor = new CommandProcessor(model);
+    pressedKeys = {};
     globalSessionId = Math.floor(Math.random() * 10000000);
+    expandedTrack = null;
+    oldColors = {};
 
     model.registerAddTrackListener(addTrack);
     model.registerAddNoteListener(addNote);
+
+    $(document).keydown(function(event) {
+        if (pressedKeys[event.key]) {
+	  return;
+	}
+        if (expandedTrack) {
+	    const trackID = expandedTrack[0].id;
+ 	    const name = model.tracks[trackID].trackData.instrument.name;;
+	    if (name == 'synth') {
+ 	        const instr = model.tracks[trackID].instrument;
+	        pressedKeys[event.key] = true;
+	        if (KEYBOARD_MAP[event.key]) {
+	          instr.play(KEYBOARD_MAP[event.key], 2);
+              oldColors[event.key] = $('#key-' + KEYBOARD_MAP[event.key]).css('background-color');
+              $('#key-' + KEYBOARD_MAP[event.key]).css('background-color', '#999999');
+		    }
+	    }
+	}
+    });
+
+    $(document).keyup(function(event) {
+      if (pressedKeys[event.key]) {
+	      pressedKeys[event.key] = false;
+          $('#key-' + KEYBOARD_MAP[event.key]).css('background-color', oldColors[event.key])
+          delete oldColors[event.key];
+      }
+    });
 });
+
+
 
 function executeAddTrackCommand(){
     commandProcessor.fire(new AddTrack(globalSessionId + "-" + Object.keys(model.tracks).length,
@@ -37,7 +93,7 @@ function addTrack(index, trackData){
         for (var i in queuedNotes) {
             if (queuedNotes[i].track == index) {
                 addNote(queuedNotes[i].track, queuedNotes[i].beat, queuedNotes[i].noteData);
-                delete queuedNotes[i];
+                delete queuedNotes[i]; //have i mentioned that i hate the fact that this is real syntax? because i do.
             }
         }
     });

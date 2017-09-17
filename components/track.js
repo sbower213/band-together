@@ -3,6 +3,7 @@
 function initTrack(track) {
     track.on('click', function(e) {
         if (!$(".track.expanded").is(track)) {
+	    expandedTrack = track;
             $(".note").draggable('disable');
             $(".track.expanded .note").each(function(index) {
                 $(this).position({left:$(this).position().left, top:.5 * $(this).position().top});
@@ -22,7 +23,7 @@ function initTrack(track) {
                     $('#instrumentContainer').html(data);
 		    for (let midi = LOWER_MIDI; midi <= UPPER_MIDI; midi++) {
 		        $('#key-' + midi).mousedown(function(event) {
-		            const trackID = track[0].id.split('track')[1];
+		            const trackID = track[0].id;
 		            const midi = event.target.id.split('-')[1];
 		            model.tracks[trackID].instrument.play(midi, 2);
 			});
