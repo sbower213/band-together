@@ -38,6 +38,7 @@ function addTrack(index, trackData){
     $.get('./components/track.html', function(data){
         $('#trackContainer').append(data);
         $(".track").last().attr("id","track" + index);
+        $(".delete").last().attr("onclick","deleteTrack('"+index+"')")
         initTrack($("#track" + index));
     });
 }
@@ -46,8 +47,8 @@ function executeDeleteTrackCommand(trackId){
     commandProcessor.fire(new DeleteTrack(trackId));
 }
 
-function deleteTrack(trackId){
-    $('#'+trackId).remove();
+function deleteTrack(track_index){
+    $('#track'+track_index).remove();
 }
 
 function executeModifyTrackCommand(trackId, modification){
