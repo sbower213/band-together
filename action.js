@@ -54,10 +54,10 @@ $(document).ready(function() {
 	    const trackID = expandedTrack[0].id;
  	    const name = model.tracks[trackID].trackData.instrument.name;;
 	    if (name == 'synth') {
- 	        const instr = model.tracks[trackID].instrument;
+ 	        const track = model.tracks[trackID];
 	        pressedKeys[event.key] = true;
 	        if (KEYBOARD_MAP[event.key]) {
-	          instr.play(KEYBOARD_MAP[event.key], 2);
+	          track.playNote(KEYBOARD_MAP[event.key], 2);
               oldColors[event.key] = $('#key-' + KEYBOARD_MAP[event.key]).css('background-color');
               $('#key-' + KEYBOARD_MAP[event.key]).css('background-color', '#999999');
 		    }

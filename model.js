@@ -6,6 +6,8 @@ function Model() {
   this.tracks = {};
   this.trackLength = 16; // steps
 
+    this.recording = false;
+    
   this.addNoteListeners = [];
   this.deleteNoteListeners = [];
   this.addTrackListeners = [];
@@ -60,7 +62,7 @@ Model.prototype.deleteNote = function(track, beat, pitch) {
 };
 
 Model.prototype.addTrack = function(index, trackData) {
-  this.tracks[index] = new Track(trackData);
+    this.tracks[index] = new Track(trackData, index);
 
   for (var i = 0; i < this.addTrackListeners.length; i++) {
       this.addTrackListeners[i](index, trackData);
@@ -111,6 +113,7 @@ Model.prototype.play = function() {
 	this.tracks[keys[i]].play(this.beat);
       }
         this.beat = (this.beat + 1) % this.trackLength;
+        this.beatTime = new Date().getTime();
 
         for (var i = 0; i < this.playheadListeners.length; i++) {
             this.playheadListeners[i](this.beat);
@@ -120,6 +123,18 @@ Model.prototype.play = function() {
   );
 };
 
+Model.prototype.floatBeat = function() {
+    if (!this.playInterval)
+        return this.beat;
+    var frac = (new Date().getTime()) - this.beatTime;
+    frac *= this.tempo;
+    return this.beat + frac;
+}
+
+Model.prototype.record = function() {
+    this.recording = !this.recording;
+}
+
 Model.prototype.stop = function() {
   this.pause();
   this.beat = 0;
@@ -127,7 +142,8 @@ Model.prototype.stop = function() {
 
 
 
-function Track(trackData) {
+function Track(trackData, index) {
+    this.index = index;
     this.trackData = trackData;
     this.notes = [];
     if (this.trackData.instrument.name == "synth") {
@@ -172,6 +188,15 @@ Track.prototype.play = function(beat) {
       this.notes[beat][i].noteData.duration / 4.0 / this.trackData.tempo * 60.0, // convert to secs
     ); // Assume this is common interface among instruments
   }
+}
+
+Track.prototype.playNote = function(midi, duration) {
+    this.instrument.play(midi, duration);
+
+    if (model.recording) {
+        commandProcessor.fire(new InsertNote(this.index, model.beat, midi,
+                                             { pitch: midi, duration: duration }));
+    }
 }
 
 

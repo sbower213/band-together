@@ -24,7 +24,7 @@ function initTrack(track) {
 		        $('#key-' + midi).mousedown(function(event) {
 		            const trackID = track[0].id;
 		            const midi = event.target.id.split('-')[1];
-		            model.tracks[trackID].instrument.play(midi, 2);
+		            model.tracks[trackID].playNote(midi, 2);
 			});
 		    }
                 });
