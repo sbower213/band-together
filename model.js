@@ -3,7 +3,7 @@ function Model() {
   this.beat = 0; // beats are 16th notes for now. so tempo / 4 is a beat.
   this.playInterval = null;
   this.tempo = 120.0; // bpm
-  this.tracks = [];
+  this.tracks = {};
   this.trackLength = 16; // steps
 
   this.addNoteListeners = [];
