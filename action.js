@@ -11,13 +11,21 @@ $(document).ready(function() {
 });
 
 function executeAddTrackCommand(){
-    commandProcessor.fire(new AddTrack(globalSessionId + "-" + model.tracks.length));
+    commandProcessor.fire(new AddTrack(globalSessionId + "-" + model.tracks.length,
+                                       {
+                                           tempo:120,
+                                           instrument:{
+                                               name: "synth",
+                                               mix: .5,
+                                               offset: 0
+                                           }
+                                       }));
 }
 
 var trackId = 0;
 function addTrack(index, trackData){
     $.get('./components/track.html', function(data){
-        $(data).find(".track").id("track" + index);
+        $(data).find(".track").attr("id","track" + index);
         $('#trackContainer').append(data);
         initTrack();
         $('.track').on('click', function(){

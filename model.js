@@ -54,8 +54,8 @@ Model.prototype.deleteNote = function(track, beat, pitch) {
     }
 };
 
-Model.prototype.addTrack = function(instrument, index) {
-  this.tracks[index] = new Track(new TrackData(instrument, this.tempo));
+Model.prototype.addTrack = function(index, trackData) {
+  this.tracks[index] = new Track(trackData);
 
   for (var i = 0; i < this.addTrackListeners.length; i++) {
       this.addTrackListeners[i](instrument, index);
@@ -114,6 +114,11 @@ Model.prototype.stop = function() {
 function Track(trackData) {
     this.trackData = trackData;
     this.notes = [];
+
+    if (this.trackData.instrument.name == "synth") {
+        this.instrument = new Synth(this.trackData.instrument.mix,
+                                    this.trackData.instrument.offset);
+    }
 };
 
 Track.prototype.addNote = function(beat, notedata) {
@@ -133,18 +138,12 @@ Track.prototype.play = function(beat) {
     return;
   }
   for (let i = 0; i < this.notes[beat].length; i++) {
-    this.trackData.instrument.play(
+    this.instrument.play(
       this.notes[beat][i].noteData.pitch,
       this.notes[beat][i].noteData.duration / 4.0 / this.trackData.tempo * 60.0, // convert to secs
     ); // Assume this is common interface among instruments
   }
 }
-
-
-function TrackData(instrument, tempo) {
-  this.instrument = instrument;
-  this.tempo = tempo;
-};
 
 
 
