@@ -33,7 +33,7 @@ function initTrack(track) {
             var mouseX = e.pageX - track.offset().left;
             var mouseY = e.pageY - track.offset().top;
             var beat = Math.floor(mouseX / 40);
-            var pitch = Math.floor(mouseY / (track.height() / 12.0));
+            var pitch = Math.floor(mouseY / (track.height() / 12.0)) + 60;
             commandProcessor.fire(new InsertNote(track.attr("id"),
                                                  beat,
                                                  pitch,

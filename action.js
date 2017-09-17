@@ -69,7 +69,7 @@ function addNote(track, beat, noteData) {
         var div = $("<div class='note' id='" + beat + "-" + noteData.pitch + "'></div>");
         $("#" + track + " .trackData").append(div);
         div = $("#" + beat + "-" + noteData.pitch);
-        div.offset({left: beat * 40, top: noteData.pitch * $("#" + track).height() / 12.0});
+        div.offset({left: beat * 40, top: (noteData.pitch - 60) * $("#" + track).height() / 12.0});
         div.css("width", (noteData.duration * 40) + "px");
         div.draggable({ containment: "parent",
                         grid: [40, $(".trackData").height() / 12.0 * 2],
