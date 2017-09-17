@@ -55,9 +55,9 @@ $(document).ready(function() {
     model.registerDeleteTrackListener(deleteTrack);
     model.registerDeleteNoteListener(deleteNote);
     model.registerModifyTrackListener(modifyTrack);
-    
+
     model.registerPlayheadListener(updatePlayhead);
-    
+
     $(document).keydown(function(event) {
         if (pressedKeys[event.key]) {
 	  return;
@@ -103,7 +103,7 @@ $(document).ready(function() {
 });
 
 function updatePlayhead(beat) {
-    $("#playhead").css("left", 250 + beat * 40)
+    $("#playhead").css("left", 250 + beat * 53.583)
         .animate({left: "+=50"},
                  1000 / model.tempo);
 }
@@ -130,13 +130,13 @@ function addTrack(index, trackData){
             $(".track").last().attr("id","" + index);
             $(".delete").last().attr("onclick","executeDeleteTrackCommand('"+index+"')")
             initTrack($("#" + index));
-            
+
             for (var i in queuedNotes) {
                 if (queuedNotes[i].track == index) {
                     addNote(queuedNotes[i].track, queuedNotes[i].beat, queuedNotes[i].noteData);
                     delete queuedNotes[i];
                 }
-            }    
+            }
         }
     });
 }
@@ -189,10 +189,10 @@ function addNote(track, beat, noteData) {
         var div = $("<div class='note' id='" + beat + "-" + noteData.pitch + "_" + track + "'></div>");
         $("#" + track + " .trackData").append(div);
         div = $("#" + beat + "-" + noteData.pitch + "_" + track);
-        div.css({left: beat * 40, top: (noteData.pitch - 60) * $("#" + track).height() / 12.0});
-        div.css("width", (noteData.duration * 40) + "px");
+        div.css({left: beat * 53.5833, top: (noteData.pitch - 60) * $("#" + track).height() / 12.0});
+        div.css("width", (noteData.duration * 53.5833) + "px");
         div.draggable({ containment: "parent",
-                        grid: [40, $(".trackData").height() / 12.0 * 2],
+                        grid: [53.5833, $(".trackData").height() / 12.0 * 2],
                         stop: noteDragged
                       });
         div.on("click", function(e) {
@@ -221,6 +221,6 @@ function deleteNote(track, beat, pitch) {
             delete queuedNotes[i];
             return;
         }
-            
+
     }
 }
