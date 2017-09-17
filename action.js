@@ -15,6 +15,7 @@ function executeAddTrackCommand(){
 function addTrack(){
     $.get('./components/track.html', function(data){
         $('#trackContainer').append(data);
+        initTrack();
         $('.track').on('click', function(){
             //open instrument container if one doesn't exist
             if($('#keyboard').length == 0) {

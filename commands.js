@@ -4,15 +4,16 @@ Command.prototype.resolve = function(model) {
 
 
 
-function AddTrack(index, sessionId = globalSessionId) {
+function AddTrack(index, trackData, sessionId = globalSessionId) {
     this.type = commandTypes.ADD_TRACK;
     this.index = index;
     this.sessionId = sessionId;
+    this.trackData = trackData;
 }
 AddTrack.prototype = Object.create(Command.prototype);
 
 AddTrack.prototype.resolve = function(model) {
-    model.addTrack(this.index);
+    model.addTrack(this.index, this.trackData);
 };
 
 
