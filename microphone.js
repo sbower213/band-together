@@ -43,7 +43,11 @@ class Microphone {
 	let newBuffer = this.context.createBuffer(2, buffers[0].length, this.context.sampleRate);
 	newBuffer.getChannelData(0).set(buffers[0]);
 	newBuffer.getChannelData(1).set(buffers[1]);
-	this.buffer = newBuffer;
+	  this.buffer = newBuffer;
+
+          FireBaseHandler.uploadAudio(this.buffer, function(snapshot) {
+              console.log("download url: " + snapshot.downloadURL);
+          });
       }.bind(this));
     }
   }

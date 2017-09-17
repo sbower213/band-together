@@ -194,6 +194,19 @@ function addNote(track, beat, noteData) {
                         grid: [40, $(".trackData").height() / 12.0 * 2],
                         stop: noteDragged
                       });
+        div.on("click", function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            var id = $(this).attr("id");
+            var beat = parseInt(id.substring(0,id.indexOf("-")));
+            var pitch = parseInt(id.substring(id.indexOf("-") + 1, id.indexOf("_")));
+            var track = id.substring(id.indexOf("_") + 1);
+            commandProcessor.fire(new DeleteNote(track,
+                                                 beat,
+                                                 pitch));
+
+        });
     }
 
 }

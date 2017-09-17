@@ -106,7 +106,7 @@ Model.prototype.pause = function() {
   if (this.playInterval) {
     clearInterval(this.playInterval);
       this.playInterval = null;
-      document.getElementById("bgvideo").pause();
+      //document.getElementById("bgvideo").pause();
   }
 };
 
@@ -114,7 +114,7 @@ Model.prototype.play = function() {
   if (this.playInterval) {
     return;
   }
-    document.getElementById("bgvideo").play();
+    //document.getElementById("bgvideo").play();
   // TODO: probably not a good way to do this. Should keep time using current
   // time to minimize time drift
   this.playInterval = setInterval(

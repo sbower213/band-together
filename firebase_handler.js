@@ -16,6 +16,22 @@ var historyID = window.location.hash.replace("#","");
 function FireBaseHandler() {
 }
 
+var globalSessionId;
+var audioCounter = 0;
+FireBaseHandler.uploadAudio = function(buffer, callback) {
+    var blob = new Blob(buffer.getChannelData[0]);
+
+    if (!globalSessionId) {
+        globalSessionId = 0;
+    }
+    
+    var pointRef = storage.ref().child('' + globalSessionId + '_' + audioCounter);
+    audioCounter++;
+
+    pointRef.put(blob).then(callback);
+                                       
+}
+
 FireBaseHandler.updateHistory = function(command_index,command) {
     history_entry = {};
     
