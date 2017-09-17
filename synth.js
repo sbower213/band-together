@@ -54,7 +54,7 @@ class BassSynth extends Synth{
     super('sine', 'sawtooth');
     this.offset = 500;
     this.mix = 0.5;
-    this.gain = 0.8;
+    this.gain = 1;
   }
 
   
