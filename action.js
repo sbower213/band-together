@@ -9,7 +9,7 @@ $(document).ready(function() {
     model = new Model();
     commandProcessor = new CommandProcessor(model);
     globalSessionId = Math.floor(Math.random() * 10000000);
-    
+  
     model.registerAddTrackListener(addTrack);
     model.registerAddNoteListener(addNote);
 });
@@ -24,13 +24,6 @@ function executeAddTrackCommand(){
                                                offset: 0
                                            }
                                        }));
-    let synth = new Synth('square', 'square');
-    for (let midi = LOWER_MIDI; midi <= UPPER_MIDI; midi++) {
-        console.log('hi');
-        $('#key-' + midi).mousedown(function(midi) {
-	    synth.play(midi, 2);
-	}.bind(midi));
-    }
 }
 
 var trackId = 0;
