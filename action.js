@@ -27,15 +27,20 @@ var model;
 var pressedKeys;
 var globalSessionId;
 var expandedTrack;
+<<<<<<< HEAD
 var deletedTracks = [];
+=======
+var oldColors;
+>>>>>>> ae527af5566b68c3dca01236fdd5e4b5af649a60
 
 $(document).ready(function() {
     model = new Model();
     commandProcessor = new CommandProcessor(model);
-    pressedKeys = {}
+    pressedKeys = {};
     globalSessionId = Math.floor(Math.random() * 10000000);
     expandedTrack = null;
-  
+    oldColors = {};
+
     model.registerAddTrackListener(addTrack);
     model.registerAddNoteListener(addNote);
     model.registerDeleteTrackListener(deleteTrack);
@@ -45,21 +50,25 @@ $(document).ready(function() {
 	  return;
 	}
         if (expandedTrack) {
-	    const trackID = expandedTrack[0].id.split('track')[1];
-	    const name = model.tracks[trackID].trackData.instrument.name;;
+	    const trackID = expandedTrack[0].id;
+ 	    const name = model.tracks[trackID].trackData.instrument.name;;
 	    if (name == 'synth') {
  	        const instr = model.tracks[trackID].instrument;
-	      pressedKeys[event.key] = true;
-	      if (KEYBOARD_MAP[event.key]) {
-	        instr.play(KEYBOARD_MAP[event.key], 2);
-	      }
+	        pressedKeys[event.key] = true;
+	        if (KEYBOARD_MAP[event.key]) {
+	          instr.play(KEYBOARD_MAP[event.key], 2);
+              oldColors[event.key] = $('#key-' + KEYBOARD_MAP[event.key]).css('background-color');
+              $('#key-' + KEYBOARD_MAP[event.key]).css('background-color', '#999999');
+		    }
 	    }
 	}
     });
 
     $(document).keyup(function(event) {
       if (pressedKeys[event.key]) {
-	pressedKeys[event.key] = false;
+	      pressedKeys[event.key] = false;
+          $('#key-' + KEYBOARD_MAP[event.key]).css('background-color', oldColors[event.key])
+          delete oldColors[event.key];
       }
     });
 });
@@ -80,6 +89,7 @@ function executeAddTrackCommand(){
 
 var trackId = 0;
 function addTrack(index, trackData){
+<<<<<<< HEAD
     
         console.log(index)
         $.get('./components/track.html', function(data){
@@ -95,6 +105,18 @@ function addTrack(index, trackData){
                         delete queuedNotes[i];
                     }
                 }
+=======
+    $.get('./components/track.html', function(data){
+        $('#trackContainer').append(data);
+        $(".track").last().attr("id","" + index);
+        $(".delete").last().attr("onclick","deleteTrack('"+index+"')")
+        initTrack($("#" + index));
+
+        for (var i in queuedNotes) {
+            if (queuedNotes[i].track == index) {
+                addNote(queuedNotes[i].track, queuedNotes[i].beat, queuedNotes[i].noteData);
+                delete queuedNotes[i]; //have i mentioned that i hate the fact that this is real syntax? because i do.
+>>>>>>> ae527af5566b68c3dca01236fdd5e4b5af649a60
             }
         });
      
@@ -128,7 +150,7 @@ function addNote(track, beat, noteData) {
         var div = $("<div class='note' id='" + beat + "-" + noteData.pitch + "'></div>");
         $("#" + track + " .trackData").append(div);
         div = $("#" + beat + "-" + noteData.pitch);
-        div.offset({left: beat * 40, top: noteData.pitch * $("#" + track).height() / 12.0});
+        div.offset({left: beat * 40, top: (noteData.pitch - 60) * $("#" + track).height() / 12.0});
         div.css("width", (noteData.duration * 40) + "px");
         div.draggable({ containment: "parent",
                         grid: [40, $(".trackData").height() / 12.0 * 2],

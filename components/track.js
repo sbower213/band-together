@@ -23,7 +23,7 @@ function initTrack(track) {
                     $('#instrumentContainer').html(data);
 		    for (let midi = LOWER_MIDI; midi <= UPPER_MIDI; midi++) {
 		        $('#key-' + midi).mousedown(function(event) {
-		            const trackID = track[0].id.split('track')[1];
+		            const trackID = track[0].id;
 		            const midi = event.target.id.split('-')[1];
 		            model.tracks[trackID].instrument.play(midi, 2);
 			});
@@ -34,7 +34,7 @@ function initTrack(track) {
             var mouseX = e.pageX - track.offset().left;
             var mouseY = e.pageY - track.offset().top;
             var beat = Math.floor(mouseX / 40);
-            var pitch = Math.floor(mouseY / (track.height() / 12.0));
+            var pitch = Math.floor(mouseY / (track.height() / 12.0)) + 60;
             commandProcessor.fire(new InsertNote(track.attr("id"),
                                                  beat,
                                                  pitch,
