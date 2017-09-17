@@ -75,7 +75,7 @@ $(document).ready(function() {
 });
 
 function updatePlayhead(beat) {
-    $("#playhead").css("left", beat * 40)
+    $("#playhead").css("left", 250 + beat * 40)
         .animate({left: "+=50"},
                  1000 / model.tempo);
 }
@@ -146,7 +146,7 @@ function addNote(track, beat, noteData) {
         var div = $("<div class='note' id='" + beat + "-" + noteData.pitch + "_" + track + "'></div>");
         $("#" + track + " .trackData").append(div);
         div = $("#" + beat + "-" + noteData.pitch + "_" + track);
-        div.offset({left: beat * 40, top: (noteData.pitch - 60) * $("#" + track).height() / 12.0});
+        div.css({left: beat * 40, top: (noteData.pitch - 60) * $("#" + track).height() / 12.0});
         div.css("width", (noteData.duration * 40) + "px");
         div.draggable({ containment: "parent",
                         grid: [40, $(".trackData").height() / 12.0 * 2],

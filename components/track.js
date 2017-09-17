@@ -12,7 +12,6 @@ function initTrack(track) {
             $(".track").removeClass('expanded');
             track.addClass('expanded');
             
-            $(".trackData.expanded").css("transform", "scale(1, 2)");
             $(".track.expanded .note").each(function(index) {
                 $(this).position({left:$(this).position().left, top:2 * $(this).position().top});
             });
@@ -31,8 +30,8 @@ function initTrack(track) {
                 });
             }
         } else {
-            var mouseX = e.pageX - track.offset().left;
-            var mouseY = e.pageY - track.offset().top;
+            var mouseX = e.pageX - track.find(".trackData").offset().left;
+            var mouseY = e.pageY - track.find(".trackData").parent().offset().top;
             var beat = Math.floor(mouseX / 40);
             var pitch = Math.floor(mouseY / (track.height() / 12.0)) + 60;
             commandProcessor.fire(new InsertNote(track.attr("id"),
@@ -48,7 +47,7 @@ function initTrack(track) {
 }
 
 function noteDragged(e, ui) {
-    var parent = ui.helper.parent().parent();
+    var parent = ui.helper.parent();
 
     var id = ui.helper.attr("id");
     var beat = parseInt(id.substring(0,id.indexOf("-")));
