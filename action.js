@@ -27,6 +27,7 @@ var model;
 var pressedKeys;
 var globalSessionId;
 var expandedTrack;
+var deletedTracks = [];
 
 $(document).ready(function() {
     model = new Model();
@@ -37,6 +38,7 @@ $(document).ready(function() {
   
     model.registerAddTrackListener(addTrack);
     model.registerAddNoteListener(addNote);
+    model.registerDeleteTrackListener(deleteTrack);
 
     $(document).keydown(function(event) {
         if (pressedKeys[event.key]) {
@@ -78,19 +80,25 @@ function executeAddTrackCommand(){
 
 var trackId = 0;
 function addTrack(index, trackData){
-    $.get('./components/track.html', function(data){
-        $('#trackContainer').append(data);
-        $(".track").last().attr("id","" + index);
-        $(".delete").last().attr("onclick","deleteTrack('"+index+"')")
-        initTrack($("#" + index));
+    
+        console.log(index)
+        $.get('./components/track.html', function(data){
+            if(deletedTracks.indexOf(index) < 0) {
+                $('#trackContainer').append(data);
+                $(".track").last().attr("id","" + index);
+                $(".delete").last().attr("onclick","executeDeleteTrackCommand('"+index+"')")
+                initTrack($("#" + index));
 
-        for (var i in queuedNotes) {
-            if (queuedNotes[i].track == index) {
-                addNote(queuedNotes[i].track, queuedNotes[i].beat, queuedNotes[i].noteData);
-                delete queuedNotes[i];
+                for (var i in queuedNotes) {
+                    if (queuedNotes[i].track == index) {
+                        addNote(queuedNotes[i].track, queuedNotes[i].beat, queuedNotes[i].noteData);
+                        delete queuedNotes[i];
+                    }
+                }
             }
-        }
-    });
+        });
+     
+    
 }
 
 function executeDeleteTrackCommand(trackId){
@@ -98,6 +106,7 @@ function executeDeleteTrackCommand(trackId){
 }
 
 function deleteTrack(track_index){
+    deletedTracks.push(track_index);
     $('#'+track_index).remove();
 }
 

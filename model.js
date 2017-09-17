@@ -30,7 +30,7 @@ Model.prototype.registerModifyTrackListener = function(fn) {
     this.modifyTrackListeners.push(fn);
 }
 
-Model.prototype.registerDeleteNoteListener = function(fn) {
+Model.prototype.registerDeleteTrackListener = function(fn) {
     this.deleteTrackListeners.push(fn);
 }
 
@@ -69,6 +69,8 @@ Model.prototype.modifyTrack = function(index, trackData) {
 };
 
 Model.prototype.deleteTrack = function(index) {
+    delete this.tracks[index];
+    
     for (var i = 0; i < this.deleteTrackListeners.length; i++) {
         this.deleteTrackListeners[i](index);
     }
