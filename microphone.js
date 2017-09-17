@@ -88,24 +88,24 @@ class Microphone {
 
         var request = new XMLHttpRequest();
         request.open('GET', downloadUrl, true);
-        request.responseType = 'arraybuffer';
+        request.responseType = 'blob';
 
-        request.onload = function() {
-            var audioData = request.response;
+        request.onload = (function() {
+            var audioData;
+            var fileReader = new FileReader();
+            var context = this.context;
+            var t = this;
+            fileReader.onload = function() {
+                audioData = this.result;
 
-            this.context.decodeAudioData(audioData, (function(buffer) {
-                 let newBuffer = this.context.createBuffer(2, bufferLength, sampleRate);
-
-                newBuffer.getChannelData(0).set(buffer);
-                newBuffer.getChannelData(1).set(buffer);
-                this.buffer = newBuffer;
-
-                soundBank[index] = this;
-            }).bind(this),
-                                     
-             function(e){ console.log("Error with decoding audio data" + e.err); });
-
-        };
+                let newBuffer = context.createBuffer(2, bufferLength, sampleRate);
+                                            
+                newBuffer.getChannelData(0).set(audioData);
+                newBuffer.getChannelData(1).set(audioData);
+                t.buffer = newBuffer;
+            };
+            fileReader.readAsArrayBuffer(request.response);
+        }).bind(this);
 
         request.send();
     }

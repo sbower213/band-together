@@ -19,7 +19,7 @@ function FireBaseHandler() {
 var globalSessionId;
 var audioCounter = 0;
 FireBaseHandler.uploadAudio = function(buffer, callback) {
-    var blob = new Blob(buffer.getChannelData[0]);
+    var blob = new Blob(buffer.getChannelData(0));
 
     if (!globalSessionId) {
         globalSessionId = 0;

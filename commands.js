@@ -25,6 +25,9 @@ function nativizeCommand(command) {
     case commandTypes.PROJECT_SETTINGS:
         command.__proto__ = ProjectSettings.prototype;
         break;
+    case commandTypes.ADD_SOUND:
+        command.__proto__ = AddSound.prototype;
+        break;
     }
     return command;
 }
@@ -106,6 +109,7 @@ function AddSound(index, bufferLength, sampleRate, downloadUrl, sessionId = glob
     this.sampleRate = sampleRate;
     this.downloadUrl = downloadUrl;
     this.sessionId = sessionId;
+    this.type = commandTypes.ADD_SOUND;
 }
 AddSound.prototype = Object.create(Command.prototype);
 
