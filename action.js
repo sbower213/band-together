@@ -43,14 +43,14 @@ $(document).ready(function() {
 	  return;
 	}
         if (expandedTrack) {
-	    const trackID = expandedTrack[0].id.split('track')[1];
-	    const name = model.tracks[trackID].trackData.instrument.name;;
+	    const trackID = expandedTrack[0].id;
+ 	    const name = model.tracks[trackID].trackData.instrument.name;;
 	    if (name == 'synth') {
  	        const instr = model.tracks[trackID].instrument;
-	      pressedKeys[event.key] = true;
-	      if (KEYBOARD_MAP[event.key]) {
-	        instr.play(KEYBOARD_MAP[event.key], 2);
-	      }
+	        pressedKeys[event.key] = true;
+	        if (KEYBOARD_MAP[event.key]) {
+	          instr.play(KEYBOARD_MAP[event.key], 2);
+		}
 	    }
 	}
     });
