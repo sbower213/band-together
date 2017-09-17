@@ -27,14 +27,16 @@ var model;
 var pressedKeys;
 var globalSessionId;
 var expandedTrack;
+var oldColors;
 
 $(document).ready(function() {
     model = new Model();
     commandProcessor = new CommandProcessor(model);
-    pressedKeys = {}
+    pressedKeys = {};
     globalSessionId = Math.floor(Math.random() * 10000000);
     expandedTrack = null;
-  
+    oldColors = {};
+
     model.registerAddTrackListener(addTrack);
     model.registerAddNoteListener(addNote);
 
@@ -50,14 +52,18 @@ $(document).ready(function() {
 	        pressedKeys[event.key] = true;
 	        if (KEYBOARD_MAP[event.key]) {
 	          instr.play(KEYBOARD_MAP[event.key], 2);
-		}
+              oldColors[event.key] = $('#key-' + KEYBOARD_MAP[event.key]).css('background-color');
+              $('#key-' + KEYBOARD_MAP[event.key]).css('background-color', '#999999');
+		    }
 	    }
 	}
     });
 
     $(document).keyup(function(event) {
       if (pressedKeys[event.key]) {
-	pressedKeys[event.key] = false;
+	      pressedKeys[event.key] = false;
+          $('#key-' + KEYBOARD_MAP[event.key]).css('background-color', oldColors[event.key])
+          delete oldColors[event.key];
       }
     });
 });
@@ -87,7 +93,7 @@ function addTrack(index, trackData){
         for (var i in queuedNotes) {
             if (queuedNotes[i].track == index) {
                 addNote(queuedNotes[i].track, queuedNotes[i].beat, queuedNotes[i].noteData);
-                delete queuedNotes[i];
+                delete queuedNotes[i]; //have i mentioned that i hate the fact that this is real syntax? because i do.
             }
         }
     });
