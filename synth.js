@@ -15,6 +15,7 @@ class Synth {
     let osc2 = audioContext.createOscillator();
     let gainOsc = audioContext.createGain();
     let gainOsc2 = audioContext.createGain();
+    let gainOsc3 = audioContext.createGain();
 
     osc.type = this.type1;
     osc2.type = this.type2;
@@ -30,10 +31,14 @@ class Synth {
     gainOsc2.gain.setValueAtTime(this.mix, audioContext.currentTime);
     gainOsc2.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + duration);
 
+    gainOsc3.gain.value = 0.3;
+    
     osc.connect(gainOsc);
     osc2.connect(gainOsc2);
-    gainOsc.connect(audioContext.destination);
-    gainOsc2.connect(audioContext.destination);
+    gainOsc.connect(gainOsc3);
+    gainOsc2.connect(gainOsc3);
+    gainOsc3.connect(audioContext.destination);
+
     
     osc.start(audioContext.currentTime);
     osc2.start(audioContext.currentTime);
