@@ -1,7 +1,7 @@
 
 
 function initTrack(track) {
-    track.on('click', function(e) {
+    track.find(".trackData").on('click', function(e) {
         if (!$(".track.expanded").is(track)) {
 	    expandedTrack = track;
             $(".note").draggable('disable');
@@ -53,6 +53,7 @@ function noteDragged(e, ui) {
     var beat = parseInt(id.substring(0,id.indexOf("-")));
     var pitch = parseInt(id.substring(id.indexOf("-") + 1, id.indexOf("_")));
     var track = id.substring(id.indexOf("_") + 1);
+    var duration = ui.helper.style("width") / 40;
     commandProcessor.fire(new DeleteNote(track,
                                          beat,
                                          pitch));
@@ -66,6 +67,6 @@ function noteDragged(e, ui) {
                                          pitch,
                                          {
                                              pitch: pitch,
-                                             duration: 1
+                                             duration: duration
                                          }));
 }
