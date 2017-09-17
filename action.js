@@ -1,6 +1,6 @@
 const LOWER_MIDI = 36;
 const UPPER_MIDI = 107;
-const KEYBOARD_MAP = {
+const KEYBOARD_SYNTH_MAP = {
   'a': 60,
   'w': 61,
   's': 62,
@@ -20,6 +20,17 @@ const KEYBOARD_MAP = {
   ';': 76,
   '\'': 77,
   ']': 78,
+}
+const KEYBOARD_DRUMS_MAP = {
+  'q': 0,
+  'w': 1,
+  'e': 2,
+  'a': 3,
+  's': 4,
+  'd': 5,
+  'z': 6,
+  'x': 7,
+  'c': 8,
 }
 
 var commandProcessor;
@@ -52,25 +63,40 @@ $(document).ready(function() {
 	}
         if (expandedTrack) {
 	    const trackID = expandedTrack[0].id;
- 	    const name = model.tracks[trackID].trackData.instrument.name;;
+ 	    const name = model.tracks[trackID].trackData.instrument.name;
 	    if (name == 'synth') {
  	        const track = model.tracks[trackID];
 	        pressedKeys[event.key] = true;
-	        if (KEYBOARD_MAP[event.key]) {
-	          track.playNote(KEYBOARD_MAP[event.key], 2);
-              oldColors[event.key] = $('#key-' + KEYBOARD_MAP[event.key]).css('background-color');
-              $('#key-' + KEYBOARD_MAP[event.key]).css('background-color', '#999999');
-		    }
+	        if (KEYBOARD_SYNTH_MAP[event.key]) {
+	            track.playNote(KEYBOARD_SYNTH_MAP[event.key], 2);
+		    oldColors[event.key] = $('#key-' + KEYBOARD_SYNTH_MAP[event.key]).css('background-color');
+		    $('#key-' + KEYBOARD_SYNTH_MAP[event.key]).css('background-color', '#999999');
+		}
+	    } else if (name == 'drums') {
+		const track = model.tracks[trackID];
+	        pressedKeys[event.key] = true;
+	        if (KEYBOARD_DRUMS_MAP[event.key] != null && KEYBOARD_DRUMS_MAP[event.key] != 'undefined') {
+	            track.playNote(KEYBOARD_DRUMS_MAP[event.key], 2);
+		    oldColors[event.key] = $('#drum-' + KEYBOARD_DRUMS_MAP[event.key]).css('background-color');
+		    $('#drum-' + KEYBOARD_DRUMS_MAP[event.key]).css('background-color', '#999999');
+		}
 	    }
 	}
     });
 
     $(document).keyup(function(event) {
-      if (pressedKeys[event.key]) {
-	      pressedKeys[event.key] = false;
-          $('#key-' + KEYBOARD_MAP[event.key]).css('background-color', oldColors[event.key])
-          delete oldColors[event.key];
-      }
+	if (pressedKeys[event.key] && expandedTrack) {
+	    const trackID = expandedTrack[0].id;
+ 	    const name = model.tracks[trackID].trackData.instrument.name;
+
+	    pressedKeys[event.key] = false;
+	    if (name == 'synth') {
+		$('#key-' + KEYBOARD_SYNTH_MAP[event.key]).css('background-color', oldColors[event.key]);
+	    } else if (name == 'drums') {
+		$('#drum-' + KEYBOARD_DRUMS_MAP[event.key]).css('background-color', oldColors[event.key]);
+	    }
+	    delete oldColors[event.key];
+	}
     });
 });
 
