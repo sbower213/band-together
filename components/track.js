@@ -3,7 +3,7 @@ function openDrums(track) {
     $('#instrumentContainer').empty();
     $.get('./components/drumpad.html', function(data){
         $('#instrumentContainer').html(data);
-	for (let midi = 0; midi <= 9; midi++) {
+	for (let midi = 60; midi <= 68; midi++) {
 	    $('#drum-' + midi).mousedown(function(event) {
 		const midi = event.target.id.split('-')[1];
 		model.tracks[trackID].playNote(midi, 1);
