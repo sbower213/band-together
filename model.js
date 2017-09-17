@@ -195,7 +195,8 @@ Track.prototype.playNote = function(midi, duration) {
 
     if (model.recording) {
         commandProcessor.fire(new InsertNote(this.index, model.beat, midi,
-                                             { pitch: midi, duration: duration }));
+                                             { pitch: midi,
+                                               duration: duration * this.trackData.tempo * 4.0 / 60.0 }));
     }
 }
 
