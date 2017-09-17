@@ -103,18 +103,9 @@ function addTrack(index, trackData){
                         delete queuedNotes[i];
                     }
                 }
-    $.get('./components/track.html', function(data){
-        $('#trackContainer').append(data);
-        $(".track").last().attr("id","" + index);
-        $(".delete").last().attr("onclick","deleteTrack('"+index+"')")
-        initTrack($("#" + index));
-
-        for (var i in queuedNotes) {
-            if (queuedNotes[i].track == index) {
-                addNote(queuedNotes[i].track, queuedNotes[i].beat, queuedNotes[i].noteData);
-                delete queuedNotes[i];
-            }
-        });
+    
+        }
+    });
      
     
 }
