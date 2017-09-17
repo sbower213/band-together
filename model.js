@@ -76,7 +76,7 @@ Model.prototype.modifyTrack = function(index, trackData) {
     } else if (trackData.instrument.name == 'drums') {
 	this.tracks[index].instrument = new Drums();
     } else if (trackData.instrument.name == 'microphone') {
-	this.tracks[index].instrument = new Microphone();
+	this.tracks[index].instrument = new Microphone(index);
     }
     
     for (var i = 0; i < this.modifyTrackListeners.length; i++) {
@@ -175,6 +175,10 @@ Track.prototype.addNote = function(beat, notedata) {
         this.notes[beat] = [];
     }
     this.notes[beat].push(n);
+
+    if (this.trackData.instrument.name == "microphone") {
+        this.instrument.load(n.noteData.soundIndex);
+    }
 };
 
 Track.prototype.deleteNote = function(beat, pitch) {

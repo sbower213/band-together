@@ -26,6 +26,17 @@ function openKeyboard(track) {
     });
 }
 
+function openMic(track) {
+    $('#instrumentContainer').empty();
+    $.get('./components/mic.html', function(data){
+        $('#instrumentContainer').html(data);
+        $('#record').on("click", function() {
+            const trackID = track[0].id;
+            model.tracks[trackID].instrument.toggleRecording();
+        });
+    });
+}
+
 function openInstrument(instrumentName, track) {
     if(instrumentName == "synth") {
         if($('#keyboard').length == 0) {
@@ -34,6 +45,10 @@ function openInstrument(instrumentName, track) {
     } else if (instrumentName == "drums") {
         if($('#drumpad').length == 0) {
             openDrums(track);
+        }
+    } else if (instrumentName == "microphone") {
+        if ($('#microphone').length == 0) {
+            openMic(track);
         }
     }
 }

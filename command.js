@@ -5,7 +5,8 @@ var commandTypes = {
     NOP:3,
     INSERT_NOTE:4,
     DELETE_NOTE:5,
-    PROJECT_SETTINGS:6
+    PROJECT_SETTINGS:6,
+    ADD_SOUND: 8
 };
 
 

@@ -99,3 +99,20 @@ DeleteNote.prototype = Object.create(Command.prototype);
 DeleteNote.prototype.resolve = function(model) {
     model.deleteNote(this.track, this.beat, this.pitch);
 };
+
+function AddSound(index, bufferLength, sampleRate, downloadUrl, sessionId = globalSessionId) {
+    this.index = index;
+    this.bufferLength = bufferLength;
+    this.sampleRate = sampleRate;
+    this.downloadUrl = downloadUrl;
+    this.sessionId = sessionId;
+}
+AddSound.prototype = Object.create(Command.prototype);
+
+AddSound.prototype.resolve = function(model) {
+    soundBank[this.index] = {
+        bufferLength: this.bufferLength,
+        sampleRate: this.sampleRate,
+        downloadUrl: this.downloadUrl
+    };
+}
