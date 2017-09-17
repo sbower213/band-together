@@ -74,6 +74,14 @@ $(document).ready(function() {
 		    oldColors[event.key] = $('#key-' + KEYBOARD_SYNTH_MAP[event.key]).css('background-color');
 		    $('#key-' + KEYBOARD_SYNTH_MAP[event.key]).css('background-color', '#999999');
 		}
+	    } else if (name == 'bass') {
+ 	        const track = model.tracks[trackID];
+	        pressedKeys[event.key] = true;
+	        if (KEYBOARD_SYNTH_MAP[event.key]) {
+	            track.playNote(KEYBOARD_SYNTH_MAP[event.key], 2);
+		    oldColors[event.key] = $('#key-' + KEYBOARD_SYNTH_MAP[event.key]).css('background-color');
+		    $('#key-' + KEYBOARD_SYNTH_MAP[event.key]).css('background-color', '#999999');
+		}
 	    } else if (name == 'drums') {
 		const track = model.tracks[trackID];
 	        pressedKeys[event.key] = true;
@@ -92,7 +100,7 @@ $(document).ready(function() {
  	    const name = model.tracks[trackID].trackData.instrument.name;
 
 	    pressedKeys[event.key] = false;
-	    if (name == 'synth') {
+	    if (name == 'synth' || name == 'bass') {
 		$('#key-' + KEYBOARD_SYNTH_MAP[event.key]).css('background-color', oldColors[event.key]);
 	    } else if (name == 'drums') {
 		$('#drum-' + KEYBOARD_DRUMS_MAP[event.key]).css('background-color', oldColors[event.key]);
@@ -146,9 +154,11 @@ function changeInstrument() {
   newName = $('#instrumentName').val();
   if (expandedTrack) {
     const trackID = expandedTrack[0].id;
-
+      console.print(newName);
     if (newName == 'synth') {
       model.tracks[trackID].instrument = new Synth('square', 'square');
+    } else if (newName == 'bass') {
+      model.tracks[trackID].instrument = new BassSynth();
     } else if (newName == 'drums') {
       model.tracks[trackID].instrument = new Drums();
     } else if (newName == 'microphone') {

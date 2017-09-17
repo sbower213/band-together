@@ -4,7 +4,7 @@ function Model() {
   this.playInterval = null;
   this.tempo = 120.0; // bpm
   this.tracks = {};
-  this.trackLength = 16; // steps
+  this.trackLength = 28; // steps
 
     this.recording = false;
     
@@ -73,6 +73,8 @@ Model.prototype.modifyTrack = function(index, trackData) {
     this.tracks[index].trackData = trackData;
     if (trackData.instrument.name == 'synth') {
 	this.tracks[index].instrument = new Synth('square', 'square');
+    } else if (trackData.instrument.name == 'bass') {
+        this.tracks[index].instrument = new BassSynth();
     } else if (trackData.instrument.name == 'drums') {
 	this.tracks[index].instrument = new Drums();
     } else if (trackData.instrument.name == 'microphone') {

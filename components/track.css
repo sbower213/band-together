@@ -1,6 +1,6 @@
 
 .track{
-    background-color: rgba(173,140,255, .3);
+    /* background-color: rgba(173,140,255, .3); */
     margin-bottom: 5px;
     height: 125px;
     position: relative;
@@ -39,6 +39,7 @@
 .trackGrid {
     height: 100%;
     border-collapse: collapse;
+    background-color: white;
 }
 
 .gridBlock{

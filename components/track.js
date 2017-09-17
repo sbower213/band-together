@@ -40,8 +40,13 @@ function openMic(track) {
 function openInstrument(instrumentName, track) {
     if(instrumentName == "synth") {
         if($('#keyboard').length == 0) {
-            openKeyboard(track);
-        }
+	    openKeyboard(track);
+	}
+    }
+    else if(instrumentName == "bass") {
+        if($('#keyboard').length == 0) {
+	    openKeyboard(track);
+	}
     } else if (instrumentName == "drums") {
         if($('#drumpad').length == 0) {
             openDrums(track);
@@ -63,16 +68,6 @@ function initTrack(track) {
         openInstrument(select.val(), track);
         commandProcessor.fire(new ModifyTrack(trackID,
                                               model.tracks[trackID].trackData));
-	$('#instrumentContainer').empty();
-	$.get('./components/drumpad.html', function(data){
-            $('#instrumentContainer').html(data);
-	    for (let midi = 60; midi <= 68; midi++) {
-		$('#drum-' + midi).mousedown(function(event) {
-		    const midi = event.target.id.split('-')[1];
-		    model.tracks[trackID].playNote(midi, 1);
-		});
-	    }
-        });
     });
     track.find(".trackData").on('click', function(e) {
         if (!$(".track.expanded").is(track)) {
