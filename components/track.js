@@ -46,10 +46,18 @@ function initTrack(track) {
 	const trackID = track[0].id;
 	model.tracks[trackID].trackData.instrument.name = select.val();
         openInstrument(select.val(), track);
-
         commandProcessor.fire(new ModifyTrack(trackID,
-                                            model.tracks[trackID].trackData));
-                                            
+                                              model.tracks[trackID].trackData));
+	$('#instrumentContainer').empty();
+	$.get('./components/drumpad.html', function(data){
+            $('#instrumentContainer').html(data);
+	    for (let midi = 60; midi <= 68; midi++) {
+		$('#drum-' + midi).mousedown(function(event) {
+		    const midi = event.target.id.split('-')[1];
+		    model.tracks[trackID].playNote(midi, 1);
+		});
+	    }
+        });
     });
     track.find(".trackData").on('click', function(e) {
         if (!$(".track.expanded").is(track)) {

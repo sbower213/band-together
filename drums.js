@@ -35,11 +35,11 @@ class Drums {
   }
 
   play(note, duration) {
-    if (note < 0 || note >= NAMES.length) {
+    if (note < 60 || note >= 60 + NAMES.length) {
       console.log('invalid drums note');
       return;
     }
-    const buffer = this.buffers[note];
+    const buffer = this.buffers[note - 60];
     if (buffer != null) {
       let source = this.context.createBufferSource();
       source.buffer = buffer;

@@ -114,7 +114,7 @@ Model.prototype.play = function() {
   if (this.playInterval) {
     return;
   }
-    //document.getElementById("bgvideo").play();
+  document.getElementById("bgvideo").play();
   // TODO: probably not a good way to do this. Should keep time using current
   // time to minimize time drift
   this.playInterval = setInterval(
@@ -260,24 +260,24 @@ function testDrums() {
   model.addTrack(0, new TrackData({name: 'drums'}, model.tempo));
 
   // kick
-  model.addNote(0, 0, new NoteData(0, 1));
-  model.addNote(0, 4, new NoteData(0, 1));
-  model.addNote(0, 8, new NoteData(0, 1));
-  model.addNote(0, 12, new NoteData(0, 1));
+  model.addNote(0, 0, new NoteData(60, 1));
+  model.addNote(0, 4, new NoteData(60, 1));
+  model.addNote(0, 8, new NoteData(60, 1));
+  model.addNote(0, 12, new NoteData(60, 1));
 
   // clap
-  model.addNote(0, 4, new NoteData(1, 1));
-  model.addNote(0, 12, new NoteData(1, 1));
+  model.addNote(0, 4, new NoteData(61, 1));
+  model.addNote(0, 12, new NoteData(61, 1));
 
   // hi hat
-  model.addNote(0, 0, new NoteData(3, 1));
-  model.addNote(0, 2, new NoteData(3, 1));
-  model.addNote(0, 4, new NoteData(3, 1));
-  model.addNote(0, 6, new NoteData(3, 1));
-  model.addNote(0, 8, new NoteData(3, 1));
-  model.addNote(0, 10, new NoteData(3, 1));
-  model.addNote(0, 12, new NoteData(3, 1));
-  model.addNote(0, 14, new NoteData(3, 1));
+  model.addNote(0, 0, new NoteData(63, 1));
+  model.addNote(0, 2, new NoteData(63, 1));
+  model.addNote(0, 4, new NoteData(63, 1));
+  model.addNote(0, 6, new NoteData(63, 1));
+  model.addNote(0, 8, new NoteData(63, 1));
+  model.addNote(0, 10, new NoteData(63, 1));
+  model.addNote(0, 12, new NoteData(63, 1));
+  model.addNote(0, 14, new NoteData(63, 1));
 
   model.play();
 }

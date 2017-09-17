@@ -22,15 +22,15 @@ const KEYBOARD_SYNTH_MAP = {
   ']': 78,
 }
 const KEYBOARD_DRUMS_MAP = {
-  'q': 0,
-  'w': 1,
-  'e': 2,
-  'a': 3,
-  's': 4,
-  'd': 5,
-  'z': 6,
-  'x': 7,
-  'c': 8,
+  'q': 60,
+  'w': 61,
+  'e': 62,
+  'a': 63,
+  's': 64,
+  'd': 65,
+  'z': 66,
+  'x': 67,
+  'c': 68,
 }
 
 var commandProcessor;
@@ -65,6 +65,7 @@ $(document).ready(function() {
         if (expandedTrack) {
 	    const trackID = expandedTrack[0].id;
  	    const name = model.tracks[trackID].trackData.instrument.name;
+
 	    if (name == 'synth') {
  	        const track = model.tracks[trackID];
 	        pressedKeys[event.key] = true;
