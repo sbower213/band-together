@@ -82,6 +82,10 @@ Model.prototype.projectSettings = function(settings) {
     }
 };
 
+Model.prototype.isPlaying = function() {
+  return this.playinterval != null;
+}
+
 Model.prototype.pause = function() {
   if (this.playInterval) {
     clearInterval(this.playInterval);
@@ -97,8 +101,9 @@ Model.prototype.play = function() {
   // time to minimize time drift
   this.playInterval = setInterval(
     function() {
-      for (let i = 0; i < this.tracks.length; i++) {
-	this.tracks[i].play(this.beat);
+      const keys = Object.keys(this.tracks);
+      for (let i = 0; i < keys.length; i++) {
+	this.tracks[keys[i]].play(this.beat);
       }
       this.beat = (this.beat + 1) % this.trackLength;
     }.bind(this),
@@ -116,11 +121,15 @@ Model.prototype.stop = function() {
 function Track(trackData) {
     this.trackData = trackData;
     this.notes = [];
-
     if (this.trackData.instrument.name == "synth") {
         this.instrument = new Synth('square', 'square');
         this.instrument.offset = this.trackData.instrument.offset;
         this.instrument.mix = this.trackData.instrument.mix;
+    } else if (this.trackData.instrument.name == "drums") {
+        this.instrument = new Drums();
+    } else if (this.trackData.instrument.name == "microphone") {
+ 
+        this.instrument = new Microphone();
     }
 };
 
@@ -179,9 +188,11 @@ function NoteData(pitch, duration) {
 // Test functions
 function testModel() {
   let model = new Model();
-  let synth = new Synth('square', 'square');
-  synth.offset = 1200;
-  model.addTrack(0, new TrackData(synth, model.tempo));
+  model.addTrack(0, new TrackData({
+    name: 'synth',
+    offset: 1200,
+    mix: 0.5,
+  }, model.tempo));
 
   model.addNote(0, 0, new NoteData(60, 2));
   model.addNote(0, 0, new NoteData(64, 2));
@@ -200,8 +211,7 @@ function testModel() {
 
 function testDrums() {
   let model = new Model();
-  let drums = new Drums();
-  model.addTrack(0, new TrackData(drums, model.tempo));
+  model.addTrack(0, new TrackData({name: 'drums'}, model.tempo));
 
   // kick
   model.addNote(0, 0, new NoteData(0, 1));
@@ -223,62 +233,16 @@ function testDrums() {
   model.addNote(0, 12, new NoteData(3, 1));
   model.addNote(0, 14, new NoteData(3, 1));
 
-  // melody
-  let synth = new Synth('square', 'square');
-  synth.offset = 1200;
-  model.addTrack(1, new TrackData(synth, model.tempo));
-
-  model.addNote(1, 0, new NoteData(60, 2));
-  model.addNote(1, 0, new NoteData(64, 2));
-
-  model.addNote(1, 2, new NoteData(64, 1));
-  model.addNote(1, 2, new NoteData(67, 1));
-
-  model.addNote(1, 3, new NoteData(71, 1));
-  model.addNote(1, 3, new NoteData(74, 1));
-
-  model.addNote(1, 4, new NoteData(67, 8));
-  model.addNote(1, 4, new NoteData(71, 8));
-
   model.play();
 }
 
 function testMicrophone() {
   let model = new Model();
-  let drums = new Drums();
-  model.addTrack(0, new TrackData(drums, model.tempo));
-
-  // kick
-  model.addNote(0, 0, new NoteData(0, 1));
-  model.addNote(0, 4, new NoteData(0, 1));
-  model.addNote(0, 8, new NoteData(0, 1));
-  model.addNote(0, 12, new NoteData(0, 1));
-
-  // clap
-  model.addNote(0, 4, new NoteData(1, 1));
-  model.addNote(0, 12, new NoteData(1, 1));
-
-  // melody
-  let synth = new Synth('square', 'square');
-  synth.offset = 1200;
-  model.addTrack(1, new TrackData(synth, model.tempo));
-  
-  model.addNote(1, 0, new NoteData(60, 2));
-  model.addNote(1, 0, new NoteData(64, 2));
-  
-  model.addNote(1, 2, new NoteData(64, 1));
-  model.addNote(1, 2, new NoteData(67, 1));
-  
-  model.addNote(1, 3, new NoteData(71, 1));
-  model.addNote(1, 3, new NoteData(74, 1));
-  
-  model.addNote(1, 4, new NoteData(67, 8));
-  model.addNote(1, 4, new NoteData(71, 8));
-
-  let mic = new Microphone();
-  model.addTrack(2, new TrackData(mic, model.tempo));
+  model.addTrack(2, new TrackData({name: 'microphone'}, model.tempo));
   model.addNote(2, 0, new NoteData(0, 16));
 
+  const mic = model.tracks[2].instrument;
+  
   setTimeout(function() {
     mic.startRecord();
     setTimeout(function() {
