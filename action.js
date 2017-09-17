@@ -27,8 +27,15 @@ var trackId = 0;
 function addTrack(index, trackData){
     $.get('./components/track.html', function(data){
         $('#trackContainer').append(data);
-        $(".track").last().attr("id","track" + index);
-        initTrack($("#track" + index));
+        $(".track").last().attr("id","" + index);
+        initTrack($("#" + index));
+
+        for (var i in queuedNotes) {
+            if (queuedNotes[i].track == index) {
+                addNote(queuedNotes[i].track, queuedNotes[i].beat, queuedNotes[i].noteData);
+                delete queuedNotes[i];
+            }
+        }
     });
 }
 
@@ -48,9 +55,23 @@ function modifyTrack(trackId, modification){
 
 }
 
+var queuedNotes = [];
 function addNote(track, beat, noteData) {
-    var div = $("<div class='note'></div>");
-    div.position({left: beat * 40, top: noteData.pitch * $("#" + track).height() / 12.0});
-    div.css("width", (noteData[duration] * 40) + "px");
-    $("#" + track + " .trackData").append(div);
+    if ($("#" + track).length == 0) {
+        queuedNotes.push({track:track, beat:beat, noteData:noteData});
+        return;
+    }
+    if ($("#" + beat + "-" + noteData.pitch).length == 0) {
+        var div = $("<div class='note' id='" + beat + "-" + noteData.pitch + "'></div>");
+        $("#" + track + " .trackData").append(div);
+        div = $("#" + beat + "-" + noteData.pitch);
+        div.offset({left: beat * 40, top: noteData.pitch * $("#" + track).height() / 12.0});
+        div.css("width", (noteData.duration * 40) + "px");
+        div.draggable({ containment: "parent",
+                        grid: [40, $(".trackData").height() / 12.0 * 2],
+                        stop: noteDragged,
+                        disabled: true
+                      });
+    }
+    
 }
