@@ -1,3 +1,6 @@
+const LOWER_MIDI = 36;
+const UPPER_MIDI = 107;
+
 var commandProcessor;
 var model;
 var globalSessionId;
@@ -21,6 +24,13 @@ function executeAddTrackCommand(){
                                                offset: 0
                                            }
                                        }));
+    let synth = new Synth('square', 'square');
+    for (let midi = LOWER_MIDI; midi <= UPPER_MIDI; midi++) {
+        console.log('hi');
+        $('#key-' + midi).mousedown(function(midi) {
+	    synth.play(midi, 2);
+	}.bind(midi));
+    }
 }
 
 var trackId = 0;
