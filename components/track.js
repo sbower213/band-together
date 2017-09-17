@@ -10,13 +10,15 @@ function initTrack(track) {
     track.on('click', function() {
         $(".note").draggable('disable');
         $(".track.expanded .note").each(function(index) {
-            $(this).offset({left:$(this).offset().left, top:.5 * $(this).offset().top});
+            $(this).position({left:$(this).position().left, top:.5 * $(this).position().top});
         });
+//        $(".track.expanded").css("transform", "");
         $(".track").removeClass('expanded');
         track.addClass('expanded');
-        
+
+        $(".trackData.expanded").css("transform", "scale(1, 2)");
         $(".track.expanded .note").each(function(index) {
-            $(this).offset({left:$(this).offset().left, top:2 * $(this).offset().top});
+            $(this).position({left:$(this).position().left, top:2 * $(this).position().top});
         });
         track.find(".note").draggable('enable');
         //open instrument container if one doesn't exist
