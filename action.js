@@ -9,7 +9,7 @@ $(document).ready(function() {
     model = new Model();
     commandProcessor = new CommandProcessor(model);
     globalSessionId = Math.floor(Math.random() * 10000000);
-  
+
     model.registerAddTrackListener(addTrack);
     model.registerAddNoteListener(addNote);
 });
@@ -30,21 +30,9 @@ var trackId = 0;
 function addTrack(index, trackData){
     $.get('./components/track.html', function(data){
         $('#trackContainer').append(data);
-<<<<<<< HEAD
         $(".track").last().attr("id","track" + index);
         $(".delete").last().attr("onclick","deleteTrack('"+index+"')")
         initTrack($("#track" + index));
-=======
-        $(".track").last().attr("id","" + index);
-        initTrack($("#" + index));
-
-        for (var i in queuedNotes) {
-            if (queuedNotes[i].track == index) {
-                addNote(queuedNotes[i].track, queuedNotes[i].beat, queuedNotes[i].noteData);
-                delete queuedNotes[i];
-            }
-        }
->>>>>>> 48d92b13d86665a356e13f2b2479cdc84baf5f24
     });
 }
 
@@ -82,5 +70,5 @@ function addNote(track, beat, noteData) {
                         disabled: true
                       });
     }
-    
+
 }
