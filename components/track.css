@@ -35,3 +35,12 @@
     margin-right: auto;
     text-align: center;
 }
+
+.trackGrid {
+    width: 100%;
+    height: 100%;
+}
+
+.gridBlock{
+    border: 1px solid black;
+}
